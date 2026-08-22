@@ -343,33 +343,29 @@
         z-index: 2;
       }
 
-      /* ألوان الأيقونات */
-.social a.facebook i {
-  color: #1877f2;
-}
+      .social a.facebook i {
+        color: #1877f2;
+      }
 
-/* TikTok خاص */
-.social a.tiktok i{
-  color:#000;
-  text-shadow:
-    2px 0 #ff0050,
-   -2px 0 #00f2ea;
-}
+      .social a.tiktok i {
+        color: #000;
+        text-shadow:
+          2px 0 #ff0050,
+          -2px 0 #00f2ea;
+      }
 
-/* عند hover تصبح بيضاء */
-.social a.tiktok:hover i{
-  color:#fff;
-  text-shadow:none;
-}
+      .social a.tiktok:hover i {
+        color: #fff;
+        text-shadow: none;
+      }
 
-.social a.whatsapp i {
-  color: #25d366;
-}
+      .social a.whatsapp i {
+        color: #25d366;
+      }
 
-/* عند hover تصبح بيضاء */
-.social a:hover i {
-  color: white;
-}
+      .social a:hover i {
+        color: white;
+      }
 
       /* ===== SEARCH ===== */
       .search-box {
@@ -829,6 +825,337 @@
         cursor: not-allowed;
       }
 
+      /* ===== NEW: CASHIER BUTTON ===== */
+      .cashier-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(
+          135deg,
+          var(--main-light) 0%,
+          var(--main) 100%
+        );
+        color: var(--text-main);
+        border: none;
+        border-radius: 15px;
+        font-weight: 900;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-family: "Cairo", sans-serif;
+        box-shadow: 0 12px 40px rgba(212, 81, 30, 0.4);
+        letter-spacing: 0.5px;
+        margin-top: 12px;
+      }
+
+      .cashier-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 50px rgba(212, 81, 30, 0.6);
+      }
+
+      .cashier-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .cart-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* ===== MODAL ===== */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
+        z-index: 3000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-card {
+        background: linear-gradient(145deg, var(--bg-card), var(--bg-dark));
+        border-radius: 30px;
+        max-width: 580px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 35px 30px;
+        border: 2px solid var(--main);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+        animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        scrollbar-width: thin;
+        scrollbar-color: var(--main) transparent;
+      }
+
+      .modal-card::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .modal-card::-webkit-scrollbar-thumb {
+        background: var(--main);
+        border-radius: 3px;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(212, 81, 30, 0.3);
+      }
+
+      .modal-header h2 {
+        font-size: 1.7rem;
+        font-weight: 900;
+        color: var(--text-main);
+        letter-spacing: -1px;
+      }
+
+      .modal-header h2 i {
+        color: var(--main-light);
+        margin-left: 10px;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      .modal-close:hover {
+        background: rgba(212, 81, 30, 0.2);
+        color: var(--main-light);
+        transform: rotate(90deg);
+      }
+
+      /* Order Type Selector */
+      .order-types {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 30px;
+      }
+
+      .order-type-btn {
+        padding: 16px 10px;
+        background: var(--bg-dark);
+        border: 2px solid rgba(212, 81, 30, 0.3);
+        border-radius: 16px;
+        color: var(--text-muted);
+        font-family: "Cairo", sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .order-type-btn i {
+        font-size: 1.6rem;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+      }
+
+      .order-type-btn:hover {
+        border-color: var(--main);
+        color: var(--text-main);
+        transform: translateY(-3px);
+      }
+
+      .order-type-btn:hover i {
+        color: var(--main-light);
+      }
+
+      .order-type-btn.active {
+        border-color: var(--main-light);
+        background: rgba(212, 81, 30, 0.15);
+        color: var(--text-main);
+        box-shadow: 0 0 30px rgba(212, 81, 30, 0.15);
+      }
+
+      .order-type-btn.active i {
+        color: var(--gold);
+      }
+
+      /* Modal Fields */
+      .modal-field {
+        margin-bottom: 22px;
+        display: none;
+      }
+
+      .modal-field.visible {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-field label {
+        display: block;
+        font-weight: 700;
+        color: var(--text-sub);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      .modal-field label .required {
+        color: #ff4444;
+        margin-right: 4px;
+      }
+
+      .modal-field input,
+      .modal-field textarea,
+      .modal-field select {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 12px;
+        border: 2px solid rgba(212, 81, 30, 0.25);
+        background: var(--bg-dark);
+        color: var(--text-main);
+        font-family: "Cairo", sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .modal-field input:focus,
+      .modal-field textarea:focus,
+      .modal-field select:focus {
+        border-color: var(--main-light);
+        box-shadow: 0 0 0 5px rgba(255, 122, 61, 0.12);
+      }
+
+      .modal-field textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+
+      .modal-field select option {
+        background: var(--bg-dark);
+        color: var(--text-main);
+      }
+
+      /* Table number buttons */
+      .table-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+
+      .table-btn {
+        padding: 14px 0;
+        background: var(--bg-dark);
+        border: 2px solid rgba(212, 81, 30, 0.25);
+        border-radius: 12px;
+        color: var(--text-sub);
+        font-weight: 700;
+        font-size: 1.1rem;
+        font-family: "Cairo", sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .table-btn:hover {
+        border-color: var(--main-light);
+        color: var(--text-main);
+        transform: translateY(-3px);
+      }
+
+      .table-btn.active {
+        border-color: var(--gold);
+        background: rgba(255, 215, 0, 0.1);
+        color: var(--gold);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+      }
+
+      .modal-submit {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, var(--main-light), var(--main));
+        color: var(--text-main);
+        border: none;
+        border-radius: 15px;
+        font-weight: 900;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-family: "Cairo", sans-serif;
+        box-shadow: 0 12px 40px rgba(212, 81, 30, 0.4);
+        margin-top: 10px;
+      }
+
+      .modal-submit:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 50px rgba(212, 81, 30, 0.5);
+      }
+
+      .modal-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Toast / Success message */
+      .toast {
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-20px);
+        background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+        border: 2px solid var(--gold);
+        border-radius: 18px;
+        padding: 22px 40px;
+        color: var(--text-main);
+        font-weight: 700;
+        font-size: 1.05rem;
+        z-index: 9999;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+
+      .toast i {
+        font-size: 1.8rem;
+        color: var(--gold);
+      }
+
       .empty-msg {
         text-align: center;
         padding: 50px 20px;
@@ -897,6 +1224,17 @@
         }
       }
 
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(60px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
       .fade-in {
         animation: fadeIn 0.6s ease-out;
       }
@@ -949,6 +1287,35 @@
         header {
           padding: 80px 15px 35px;
           margin-bottom: 30px;
+        }
+
+        .modal-card {
+          padding: 25px 20px;
+          max-height: 85vh;
+        }
+
+        .order-types {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 8px;
+        }
+
+        .order-type-btn {
+          padding: 12px 6px;
+          font-size: 0.8rem;
+        }
+
+        .order-type-btn i {
+          font-size: 1.3rem;
+        }
+
+        .table-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+
+        .toast {
+          padding: 16px 24px;
+          font-size: 0.95rem;
+          max-width: 90%;
         }
       }
 
@@ -1087,12 +1454,66 @@
         .add-btn {
           width: 100%;
         }
+
+        .modal-card {
+          padding: 20px 16px;
+        }
+
+        .modal-header h2 {
+          font-size: 1.3rem;
+        }
+
+        .order-types {
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 6px;
+        }
+
+        .order-type-btn {
+          padding: 10px 4px;
+          font-size: 0.75rem;
+          border-radius: 12px;
+        }
+
+        .order-type-btn i {
+          font-size: 1.1rem;
+        }
+
+        .table-grid {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 6px;
+        }
+
+        .table-btn {
+          padding: 10px 0;
+          font-size: 0.9rem;
+        }
+
+        .modal-field input,
+        .modal-field textarea,
+        .modal-field select {
+          padding: 12px 14px;
+          font-size: 0.9rem;
+        }
+
+        .modal-submit {
+          padding: 14px;
+          font-size: 0.95rem;
+        }
+
+        .toast {
+          padding: 14px 18px;
+          font-size: 0.85rem;
+          top: 80px;
+        }
+
+        .toast i {
+          font-size: 1.4rem;
+        }
       }
 
       .no-scroll {
         overflow: hidden;
       }
-
     </style>
   </head>
   <body>
@@ -1131,30 +1552,37 @@
       <h1 class="title">كفتة على الفحم</h1>
       <p class="subtitle">Kofta on Charcoal</p>
 
-    <div class="social">
-  <a class="facebook" href="https://www.facebook.com/share/17AXWsj3Px/" target="_blank">
-    <i class="fab fa-facebook"></i>
-  </a>
+      <div class="social">
+        <a
+          class="facebook"
+          href="https://www.facebook.com/share/17AXWsj3Px/"
+          target="_blank"
+        >
+          <i class="fab fa-facebook"></i>
+        </a>
 
-  <a class="tiktok" href="https://www.tiktok.com/@kofta_on_charcoal?_r=1&_t=ZS-95YXUsrngYS" target="_blank">
-    <i class="fab fa-tiktok"></i>
-  </a>
+        <a
+          class="tiktok"
+          href="https://www.tiktok.com/@kofta_on_charcoal?_r=1&_t=ZS-95YXUsrngYS"
+          target="_blank"
+        >
+          <i class="fab fa-tiktok"></i>
+        </a>
 
-  <a class="whatsapp" href="https://wa.me/+249125088500" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-</div>
-      </div>
-
-      <div class="search-box">
-        <div class="search-input">
-          <i class="fas fa-search"></i>
-          <input type="text" id="searchBox" placeholder="ماذا تشتهي اليوم؟" />
-        </div>
-
-        <div class="categories" id="catList"></div>
+        <a class="whatsapp" href="https://wa.me/+249125088500" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+        </a>
       </div>
     </header>
+
+    <div class="search-box">
+      <div class="search-input">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchBox" placeholder="ماذا تشتهي اليوم؟" />
+      </div>
+
+      <div class="categories" id="catList"></div>
+    </div>
 
     <!-- MENU -->
     <div class="menu-container">
@@ -1182,14 +1610,146 @@
         <div class="total-value" id="totalPrice">0 SDG</div>
       </div>
 
-      <button
-        class="checkout-btn"
-        onclick="checkout()"
-        id="checkoutBtn"
-        disabled
-      >
-        <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
-      </button>
+      <div class="cart-actions">
+        <button
+          class="checkout-btn"
+          onclick="checkout()"
+          id="checkoutBtn"
+          disabled
+        >
+          <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
+        </button>
+
+        <!-- NEW: Cashier button -->
+        <button
+          class="cashier-btn"
+          onclick="openCashierModal()"
+          id="cashierBtn"
+          disabled
+        >
+          <i class="fas fa-credit-card"></i> إرسال الطلب إلى الكاشير
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== MODAL: إرسال الطلب إلى الكاشير ===== -->
+    <div class="modal-overlay" id="cashierModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2><i class="fas fa-receipt"></i> إرسال الطلب</h2>
+          <button class="modal-close" onclick="closeCashierModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Order Type -->
+        <div class="order-types" id="orderTypeSelector">
+          <button
+            class="order-type-btn"
+            data-type="sala"
+            onclick="selectOrderType('sala')"
+          >
+            <i class="fas fa-utensils"></i>
+            صالة
+          </button>
+          <button
+            class="order-type-btn"
+            data-type="estlam"
+            onclick="selectOrderType('estlam')"
+          >
+            <i class="fas fa-hand-holding-box"></i>
+            استلام
+          </button>
+          <button
+            class="order-type-btn"
+            data-type="tawseel"
+            onclick="selectOrderType('tawseel')"
+          >
+            <i class="fas fa-truck"></i>
+            توصيل
+          </button>
+        </div>
+
+        <!-- اختيار المستخدم المستلم حسب نوع الطلب -->
+        <div id="assigneeField" class="modal-field visible">
+          <label for="orderAssignee"
+            >إرسال الطلب إلى <span class="required">*</span></label
+          >
+          <select id="orderAssignee" disabled>
+            <option value="">اختر نوع الطلب أولاً</option>
+          </select>
+          <small
+            id="assigneeHint"
+            style="display: block; margin-top: 8px; color: #aaa"
+          >
+            سيتم عرض المستخدمين المسموح لهم بهذا النوع فقط.
+          </small>
+        </div>
+
+        <!-- Fields: صالة -->
+        <div id="salaFields" class="modal-field">
+          <label>رقم الطاولة <span class="required">*</span></label>
+          <div class="table-grid" id="tableGrid">
+            <!-- JS will generate 1–20 -->
+          </div>
+        </div>
+
+        <!-- Fields: استلام -->
+        <div id="estlamFields" class="modal-field">
+          <div style="margin-bottom: 16px">
+            <label>رقم الهاتف <span class="required">*</span></label>
+            <input type="tel" id="estlamPhone" placeholder="مثال: 0912345678" />
+          </div>
+          <div style="margin-bottom: 16px">
+            <label>اسم العميل</label>
+            <input type="text" id="estlamName" placeholder="الاسم (اختياري)" />
+          </div>
+        </div>
+
+        <!-- Fields: توصيل -->
+        <div id="tawseelFields" class="modal-field">
+          <div style="margin-bottom: 16px">
+            <label>رقم الهاتف <span class="required">*</span></label>
+            <input
+              type="tel"
+              id="tawseelPhone"
+              placeholder="مثال: 0912345678"
+            />
+          </div>
+          <div style="margin-bottom: 16px">
+            <label>العنوان / الموقع <span class="required">*</span></label>
+            <input
+              type="text"
+              id="tawseelAddress"
+              placeholder="العنوان أو الموقع"
+            />
+          </div>
+        </div>
+
+        <!-- ملاحظات (عام) -->
+        <div class="modal-field visible" id="notesField">
+          <label>ملاحظات</label>
+          <textarea
+            id="orderNotes"
+            placeholder="أضف ملاحظات (اختياري)"
+          ></textarea>
+        </div>
+
+        <button
+          class="modal-submit"
+          onclick="submitCashierOrder()"
+          id="modalSubmitBtn"
+          disabled
+        >
+          <i class="fas fa-check-circle"></i> تأكيد الطلب
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMsg">تم إرسال الطلب بنجاح!</span>
     </div>
 
     <!-- FIREBASE -->
@@ -1197,6 +1757,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
+      // ============================================================
+      //  EXISTING CODE (unchanged)
+      // ============================================================
+
       const firebaseConfig = {
         apiKey: "AIzaSyAI8AjUMmUdIP2IIchf7XTYZ2hcCa79aQ8",
         authDomain: "kofta-b2885.firebaseapp.com",
@@ -1210,6 +1774,12 @@
       let products = [];
       let cart = [];
       let activeCategory = "all";
+
+      // إعدادات توجيه طلبات المنيو:
+      // أنشئ مستند settings/order_routing في Firestore وضع:
+      // cashierUserId / cashierUsername / cashierName
+      // deliveryUserId / deliveryUsername / deliveryName
+      const ORDER_ROUTING_SETTINGS_ID = "order_routing";
 
       async function loadData() {
         try {
@@ -1320,6 +1890,7 @@
         if (cart.length === 0) {
           content.innerHTML = `<div class="empty-msg"><i class="fas fa-shopping-basket"></i><p>السلة فارغة</p></div>`;
           document.getElementById("checkoutBtn").disabled = true;
+          document.getElementById("cashierBtn").disabled = true;
         } else {
           content.innerHTML = cart
             .map(
@@ -1339,6 +1910,7 @@
             )
             .join("");
           document.getElementById("checkoutBtn").disabled = false;
+          document.getElementById("cashierBtn").disabled = false;
         }
 
         const sum = cart.reduce((a, b) => a + b.price * b.qty, 0);
@@ -1350,6 +1922,7 @@
         document.body.classList.toggle("no-scroll");
       }
 
+      // EXISTING checkout() – UNCHANGED
       function checkout() {
         if (cart.length === 0) return;
         let msg = "🍖 *طلب جديد من كفتة على الفحم* 🔥\n\n";
@@ -1363,6 +1936,394 @@
       }
 
       loadData();
+
+      // ============================================================
+      //  NEW CODE: CASHIER ORDER MODAL
+      // ============================================================
+
+      // ---------- State ----------
+      let selectedOrderType = null; // 'sala' | 'estlam' | 'tawseel'
+      let selectedTable = null; // number or null
+      let menuUsers = [];
+      let eligibleAssignees = [];
+      let selectedAssignee = null;
+
+      // ---------- DOM refs ----------
+      const modalOverlay = document.getElementById("cashierModal");
+      const salaFields = document.getElementById("salaFields");
+      const estlamFields = document.getElementById("estlamFields");
+      const tawseelFields = document.getElementById("tawseelFields");
+      const tableGrid = document.getElementById("tableGrid");
+      const modalSubmitBtn = document.getElementById("modalSubmitBtn");
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      const assigneeSelect = document.getElementById("orderAssignee");
+      const assigneeHint = document.getElementById("assigneeHint");
+
+      // ---------- Generate table buttons (1–20) ----------
+      function buildTableButtons() {
+        tableGrid.innerHTML = "";
+        for (let i = 1; i <= 20; i++) {
+          const btn = document.createElement("button");
+          btn.className = "table-btn";
+          btn.textContent = i;
+          btn.dataset.table = i;
+          btn.onclick = () => selectTable(i, btn);
+          tableGrid.appendChild(btn);
+        }
+      }
+      buildTableButtons();
+
+      // ---------- Open modal ----------
+      function openCashierModal() {
+        if (cart.length === 0) {
+          showToast("⚠️ السلة فارغة، أضف منتجات أولاً.");
+          return;
+        }
+
+        // Reset state
+        selectedOrderType = null;
+        selectedTable = null;
+        selectedAssignee = null;
+        eligibleAssignees = [];
+        modalSubmitBtn.disabled = true;
+        assigneeSelect.disabled = true;
+        assigneeSelect.innerHTML =
+          '<option value="">جاري تحميل المستخدمين...</option>';
+
+        // Hide all dynamic fields
+        salaFields.classList.remove("visible");
+        estlamFields.classList.remove("visible");
+        tawseelFields.classList.remove("visible");
+
+        // Clear inputs
+        document.getElementById("estlamPhone").value = "";
+        document.getElementById("estlamName").value = "";
+        document.getElementById("tawseelPhone").value = "";
+        document.getElementById("tawseelAddress").value = "";
+        document.getElementById("orderNotes").value = "";
+
+        // Reset table buttons
+        document
+          .querySelectorAll(".table-btn")
+          .forEach((b) => b.classList.remove("active"));
+
+        // Reset order type buttons
+        document
+          .querySelectorAll(".order-type-btn")
+          .forEach((b) => b.classList.remove("active"));
+
+        modalOverlay.classList.add("active");
+        document.body.classList.add("no-scroll");
+
+        // تحميل المستخدمين من نفس قائمة users التي يديرها المدير
+        loadMenuUsers().then(() => {
+          if (selectedOrderType) populateAssigneeSelect();
+        });
+      }
+
+      // ---------- Close modal ----------
+      function closeCashierModal() {
+        modalOverlay.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+      }
+
+      // Close on overlay click
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) closeCashierModal();
+      });
+
+      // ---------- Select order type ----------
+      function selectOrderType(type) {
+        selectedOrderType = type;
+        selectedTable = null;
+
+        // Update buttons
+        document.querySelectorAll(".order-type-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.type === type);
+        });
+
+        // Hide all
+        salaFields.classList.remove("visible");
+        estlamFields.classList.remove("visible");
+        tawseelFields.classList.remove("visible");
+
+        // Reset table selection
+        document
+          .querySelectorAll(".table-btn")
+          .forEach((b) => b.classList.remove("active"));
+
+        // Show relevant fields
+        if (type === "sala") {
+          salaFields.classList.add("visible");
+        } else if (type === "estlam") {
+          estlamFields.classList.add("visible");
+        } else if (type === "tawseel") {
+          tawseelFields.classList.add("visible");
+        }
+
+        selectedAssignee = null;
+        populateAssigneeSelect();
+        validateModal();
+      }
+
+      // ---------- Select table ----------
+      function selectTable(num, btn) {
+        if (selectedOrderType !== "sala") return;
+        selectedTable = num;
+        document
+          .querySelectorAll(".table-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        validateModal();
+      }
+
+      // ---------- Validate modal ----------
+      function validateModal() {
+        let valid = false;
+
+        if (!selectedOrderType || !selectedAssignee) {
+          modalSubmitBtn.disabled = true;
+          return;
+        }
+
+        if (selectedOrderType === "sala") {
+          valid = selectedTable !== null;
+        } else if (selectedOrderType === "estlam") {
+          const phone = document.getElementById("estlamPhone").value.trim();
+          valid = phone.length > 0;
+        } else if (selectedOrderType === "tawseel") {
+          const phone = document.getElementById("tawseelPhone").value.trim();
+          const address = document
+            .getElementById("tawseelAddress")
+            .value.trim();
+          valid = phone.length > 0 && address.length > 0;
+        }
+
+        modalSubmitBtn.disabled = !valid;
+      }
+
+      // Attach input listeners for validation
+      document
+        .getElementById("estlamPhone")
+        .addEventListener("input", validateModal);
+      document
+        .getElementById("estlamName")
+        .addEventListener("input", validateModal);
+      document
+        .getElementById("tawseelPhone")
+        .addEventListener("input", validateModal);
+      document
+        .getElementById("tawseelAddress")
+        .addEventListener("input", validateModal);
+
+      // ---------- Submit order to Firestore ----------
+      async function submitCashierOrder() {
+        if (cart.length === 0) {
+          showToast("⚠️ السلة فارغة!");
+          return;
+        }
+
+        if (!selectedOrderType) {
+          showToast("⚠️ اختر نوع الطلب أولاً.");
+          return;
+        }
+
+        if (!selectedAssignee) {
+          showToast("⚠️ اختر المستخدم الذي سيستلم الطلب.");
+          return;
+        }
+
+        // Gather data
+        let orderData = {
+          orderType: selectedOrderType,
+          items: cart.map((c) => ({
+            id: c.id,
+            name: c.name,
+            price: c.price,
+            qty: c.qty,
+          })),
+          total: cart.reduce((a, b) => a + b.price * b.qty, 0),
+          notes: document.getElementById("orderNotes").value.trim() || "",
+          status: "pending",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+
+        // Type-specific fields
+        if (selectedOrderType === "sala") {
+          orderData.tableNumber = selectedTable;
+          orderData.phone = "";
+          orderData.customerName = "";
+          orderData.address = "";
+        } else if (selectedOrderType === "estlam") {
+          orderData.tableNumber = null;
+          orderData.phone = document.getElementById("estlamPhone").value.trim();
+          orderData.customerName =
+            document.getElementById("estlamName").value.trim() || "";
+          orderData.address = "";
+        } else if (selectedOrderType === "tawseel") {
+          orderData.tableNumber = null;
+          orderData.phone = document
+            .getElementById("tawseelPhone")
+            .value.trim();
+          orderData.customerName = "";
+          orderData.address = document
+            .getElementById("tawseelAddress")
+            .value.trim();
+        }
+
+        // ---- حفظ المستخدم الذي اختاره العميل حسب نوع الطلب ----
+        try {
+          const assignee = selectedAssignee;
+          orderData.routingRole = getRoutingRole(selectedOrderType);
+          orderData.assignedUserId =
+            assignee.id || assignee.uid || assignee.username;
+          orderData.assignedUsername = assignee.username || "";
+          orderData.assignedUserName = assignee.name || assignee.username || "";
+          // حقول توافقية مع أي شاشة قديمة تعتمد cashierId/cashierName
+          orderData.cashierId = orderData.assignedUserId;
+          orderData.cashierName = orderData.assignedUserName;
+          orderData.cashierType = orderData.routingRole;
+
+          // ---- حفظ الطلب كمستند مستقل لظهوره فوراً في شاشة الكاشير ----
+          await db.collection("orders").add(orderData);
+
+          // ---- Success ----
+          showToast("✅ تم إرسال الطلب إلى الكاشير بنجاح!");
+          cart = [];
+          updateCart();
+          closeCashierModal();
+        } catch (err) {
+          console.error("Error saving order:", err);
+          showToast("❌ حدث خطأ، حاول مرة أخرى.");
+        }
+      }
+
+      // ---------- تحديد المستخدم المعيّن للطلب ----------
+      function getRoutingRole(orderType) {
+        // sala = محلي/صالة، أما الاستلام والتوصيل فهما ضمن مستخدم الدليفري
+        return ["sala", "hall", "takeout"].includes(orderType)
+          ? "cashier"
+          : "delivery";
+      }
+
+      async function loadMenuUsers() {
+        try {
+          const snap = await db.collection("users").doc("all_users").get();
+          const data = snap.exists ? snap.data() || {} : {};
+          menuUsers = Array.isArray(data.data) ? data.data : [];
+        } catch (error) {
+          console.error("❌ تعذر تحميل مستخدمي المنيو:", error);
+          menuUsers = [];
+          showToast("❌ تعذر تحميل قائمة المستخدمين.");
+        }
+      }
+
+      function populateAssigneeSelect() {
+        if (!assigneeSelect) return;
+        if (!selectedOrderType) {
+          assigneeSelect.disabled = true;
+          assigneeSelect.innerHTML =
+            '<option value="">اختر نوع الطلب أولاً</option>';
+          selectedAssignee = null;
+          return;
+        }
+
+        const routingRole = getRoutingRole(selectedOrderType);
+        const allowedRoles =
+          routingRole === "cashier"
+            ? ["cashier", "cashier_delivery"]
+            : ["delivery", "cashier_delivery"];
+        eligibleAssignees = menuUsers.filter((user) =>
+          allowedRoles.includes(user.role),
+        );
+
+        assigneeSelect.innerHTML =
+          '<option value="">اختر المستخدم المستلم</option>';
+        eligibleAssignees.forEach((user, index) => {
+          const key = String(user.username || user.id || user.uid || index);
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = `${user.name || user.username || "مستخدم"}${user.role === "cashier_delivery" ? " (كاشير ودليفري)" : ""}`;
+          assigneeSelect.appendChild(option);
+        });
+        assigneeSelect.disabled = eligibleAssignees.length === 0;
+        if (assigneeHint) {
+          assigneeHint.textContent =
+            eligibleAssignees.length > 0
+              ? routingRole === "cashier"
+                ? "اختر كاشيراً لاستلام طلب الصالة/المحلي."
+                : "اختر مستخدم الدليفري لاستلام طلب التوصيل أو الاستلام."
+              : routingRole === "cashier"
+                ? "لا يوجد مستخدم كاشير مضاف حالياً."
+                : "لا يوجد مستخدم دليفري مضاف حالياً.";
+        }
+        selectedAssignee = null;
+        validateModal();
+      }
+
+      assigneeSelect.addEventListener("change", () => {
+        const selectedKey = assigneeSelect.value;
+        selectedAssignee =
+          eligibleAssignees.find(
+            (user, index) =>
+              String(user.username || user.id || user.uid || index) ===
+              selectedKey,
+          ) || null;
+        validateModal();
+      });
+
+      // ---------- Helper: default cashier name ----------
+      function getDefaultCashierName(type) {
+        const map = {
+          sala: "كاشير الصالة",
+          estlam: "كاشير الاستلام والدليفري",
+          tawseel: "كاشير التوصيل",
+        };
+        return map[type] || "كاشير";
+      }
+
+      // ---------- Toast ----------
+      let toastTimer = null;
+
+      function showToast(msg) {
+        toastMsg.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3500);
+      }
+
+      // ---------- Auto-close modal on Escape ----------
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+          closeCashierModal();
+        }
+      });
+
+      // ---------- (Optional) seed cashiers if missing ----------
+      async function seedCashiersIfMissing() {
+        const types = ["sala", "estlam", "tawseel"];
+        const names = {
+          sala: "كاشير الصالة",
+          estlam: "كاشير الاستلام",
+          tawseel: "كاشير التوصيل",
+        };
+        for (const t of types) {
+          const ref = db.collection("cashiers").doc(t);
+          const snap = await ref.get();
+          if (!snap.exists) {
+            await ref.set({
+              id: t,
+              name: names[t],
+              type: t,
+            });
+          }
+        }
+      }
+      // Run once on load
+      seedCashiersIfMissing().catch(console.warn);
     </script>
   </body>
 </html>
