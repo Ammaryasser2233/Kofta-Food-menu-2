@@ -345,7 +345,7 @@
         display: flex;
         gap: 16px;
         width: max-content;
-        animation: marqueeRTL 30s linear infinite;
+        animation: marqueeRTL 25s linear infinite; /* ⬅️ تسريع الحركة قليلاً */
       }
       .marquee-track:hover {
         animation-play-state: paused;
@@ -1669,6 +1669,9 @@
         border-radius: 99px;
         background: rgba(255, 107, 53, 0.15);
       }
+      :root {
+        --splash-duration: 4s; /* ⬅️ غيّر هذا الرقم للزمن الذي تريده */
+      }
 
       .splash-loader-bar {
         width: 0;
@@ -1679,7 +1682,7 @@
           var(--app-primary),
           var(--app-secondary)
         );
-        animation: splashLoading 10s linear forwards;
+        animation: splashLoading var(--splash-duration) linear forwards;
       }
 
       .splash-loading-text {
@@ -2429,8 +2432,8 @@
           document.body.classList.remove("no-scroll");
           window.setTimeout(function () {
             splashScreen.remove();
-          }, 900);
-        }, 10000);
+          }, 500);
+        }, 4000);
       });
     </script>
 
@@ -2533,14 +2536,16 @@
         const track = document.getElementById("popularTrack");
         if (!track) return;
 
-        // محاولة العثور على منتجات محددة كـ "شائعة"، وإلا نأخذ أول 4 منتجات متاحة
+        // محاولة العثور على منتجات شائعة
         let popularItems = products.filter(
           (p) => p.popular === true || (p.badge && p.badge.includes("الأكثر")),
         );
-        if (popularItems.length === 0) {
+
+        // إذا لم يكن هناك منتجات شائعة، خذ أول 6 منتجات متاحة
+        if (popularItems.length < 6) {
           popularItems = products
             .filter((p) => p.available !== false)
-            .slice(0, 4);
+            .slice(0, 6); // ⬅️ زيادة إلى 6 منتجات
         }
 
         if (popularItems.length === 0) {
@@ -2548,8 +2553,8 @@
           return;
         }
 
-        // تكرار القائمة لإنشاء حركة لا نهائية سلسة
-        const displayList = [...popularItems, ...popularItems];
+        // تكرار القائمة 3 مرات لحركة سلسة ومستمرة
+        const displayList = [...popularItems, ...popularItems, ...popularItems];
 
         track.innerHTML = displayList
           .map(
