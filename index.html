@@ -36,46 +36,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- PWA Manifest (Inline via JS to work on any host) -->
-    <script>
-      (function () {
-        const manifest = {
-          name: "كفتة على الفحم",
-          short_name: "كفتة",
-          description: "تجربة طلب هادئة، سريعة، ولذيذة",
-          start_url: ".",
-          scope: ".",
-          display: "standalone",
-          orientation: "portrait",
-          background_color: "#FFF8F0",
-          theme_color: "#FF6B35",
-          lang: "ar",
-          dir: "rtl",
-          icons: [
-            {
-              src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663071548584/CXdF84DqE7ssrus8kYorx2/kofta-logo_79fb0f2d.png",
-              sizes: "192x192",
-              type: "image/png",
-              purpose: "any maskable",
-            },
-            {
-              src: "https://d2xsxph8kpxj0f.cloudfront.net/310519663071548584/CXdF84DqE7ssrus8kYorx2/kofta-logo_79fb0f2d.png",
-              sizes: "512x512",
-              type: "image/png",
-              purpose: "any maskable",
-            },
-          ],
-        };
-        const blob = new Blob([JSON.stringify(manifest)], {
-          type: "application/json",
-        });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("link");
-        link.rel = "manifest";
-        link.href = url;
-        document.head.appendChild(link);
-      })();
-    </script>
+    <!-- PWA Manifest - Static File -->
+    <link rel="manifest" href="/manifest.json" />
 
     <style>
       * {
@@ -3214,42 +3176,14 @@
     <!-- PWA Service Worker Registration -->
     <script>
       if ("serviceWorker" in navigator) {
-        // Create a minimal service worker blob
-        const swCode = `
-    const CACHE_NAME = 'kofta-v2';
-    self.addEventListener('install', (e) => {
-      self.skipWaiting();
-    });
-    self.addEventListener('activate', (e) => {
-      e.waitUntil(self.clients.claim());
-    });
-    self.addEventListener('fetch', (e) => {
-      e.respondWith(
-        caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-          if (e.request.method === 'GET' && res.status === 200) {
-            const clone = res.clone();
-            caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
-          }
-          return res;
-        }).catch(() => caches.match('/')))
-      );
-    });
-  `;
-
-        const swBlob = new Blob([swCode], { type: "application/javascript" });
-        const swUrl = URL.createObjectURL(swBlob);
-
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register(swUrl)
-            .then((reg) => {
-              console.log("✅ PWA Service Worker registered");
+            .register("./sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
             })
-            .catch((err) => {
-              console.warn(
-                "⚠️ SW registration failed (expected on file://):",
-                err,
-              );
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
             });
         });
       }
