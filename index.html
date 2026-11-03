@@ -2425,15 +2425,17 @@
 
     <!-- SPLASH SCREEN TIMER: exactly 10 seconds -->
     <script>
-      window.addEventListener("DOMContentLoaded", function () {
+      window.hideMenuSplash = function () {
         const splashScreen = document.getElementById("splashScreen");
-        window.setTimeout(function () {
-          splashScreen.classList.add("is-hidden");
-          document.body.classList.remove("no-scroll");
-          window.setTimeout(function () {
-            splashScreen.remove();
-          }, 500);
-        }, 4000);
+        if (!splashScreen || splashScreen.classList.contains("is-hidden"))
+          return;
+        splashScreen.classList.add("is-hidden");
+        document.body.classList.remove("no-scroll");
+        window.setTimeout(() => splashScreen.remove(), 350);
+      };
+      window.addEventListener("DOMContentLoaded", function () {
+        // حد أقصى قصير فقط؛ تظهر البيانات من الذاكرة فوراً إن وجدت.
+        window.setTimeout(window.hideMenuSplash, 900);
       });
     </script>
 
@@ -2452,6 +2454,23 @@
       };
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
+      // احتفظ ببيانات Firestore محلياً لتتوفر قراءات الكاش عند انقطاع الإنترنت.
+      db.enablePersistence({ synchronizeTabs: true }).catch((error) => {
+        // قد تكون persistence مفعّلة مسبقاً في تبويب آخر؛ لا يمنع ذلك عمل المنيو.
+        if (
+          error.code === "failed-precondition" ||
+          error.code === "unimplemented"
+        ) {
+          console.info(
+            "Firestore persistence غير متاحة في هذا التبويب؛ سيُستخدم cache المنيو المحلي.",
+          );
+        } else {
+          console.warn(
+            "تعذر تفعيل cache Firestore:",
+            error.code || error.message,
+          );
+        }
+      });
 
       let products = [];
       let cart = [];
@@ -2459,41 +2478,84 @@
       let showUnavailableProducts = false;
       let unsubscribeMenuProducts = null;
       const ORDER_ROUTING_SETTINGS_ID = "order_routing";
+      const MENU_CACHE_KEY = "kafta_electronic_menu_snapshot_v2";
+
+      function renderMenuCategories(categories) {
+        const catList = document.getElementById("catList");
+        if (!catList) return;
+        const safeCategories = Array.isArray(categories) ? categories : [];
+        catList.innerHTML =
+          `<button class="cat-btn active" onclick="setCategory('all', this)">الكل</button>` +
+          safeCategories
+            .map(
+              (c) =>
+                `<button class="cat-btn" onclick="setCategory('${c.id}', this)">${c.name}</button>`,
+            )
+            .join("");
+      }
+      function renderMenuSnapshot(snapshot) {
+        if (!snapshot) return false;
+        renderMenuCategories(snapshot.categories);
+        showUnavailableProducts = snapshot.showUnavailable === true;
+        products = Array.isArray(snapshot.products) ? snapshot.products : [];
+        displayProducts(products);
+        renderPopularProducts();
+        window.hideMenuSplash?.();
+        return products.length > 0;
+      }
 
       async function loadData() {
+        // اعرض آخر نسخة فوراً من الذاكرة، ثم حدّثها في الخلفية.
         try {
-          const catSnap = await db
-            .collection("categories")
-            .doc("all_categories")
-            .get();
-          const categories = catSnap.data().data;
-          const catList = document.getElementById("catList");
-          catList.innerHTML = `<button class="cat-btn active" onclick="setCategory('all', this)">الكل</button>`;
-          categories.forEach((c) => {
-            catList.innerHTML += `<button class="cat-btn" onclick="setCategory('${c.id}', this)">${c.name}</button>`;
-          });
-
-          const configSnap = await db
-            .collection("settings")
-            .doc("menu_config")
-            .get();
-          showUnavailableProducts =
-            configSnap.exists && configSnap.data().showUnavailable === true;
-
-          const prodSnap = await db
-            .collection("products")
-            .doc("all_products")
-            .get();
-          products = Array.isArray(prodSnap.data()?.data)
-            ? prodSnap.data().data
-            : [];
-          displayProducts(products);
-          renderPopularProducts(); // عرض المنتجات الأكثر طلباً
+          const cached = JSON.parse(
+            localStorage.getItem(MENU_CACHE_KEY) || "null",
+          );
+          renderMenuSnapshot(cached);
+        } catch (error) {
+          console.warn("تعذر قراءة نسخة المنيو المحلية", error);
+        }
+        // لا نطلب Firestore إذا كان المتصفح يعرف أن الجهاز غير متصل.
+        // تبقى المنتجات والتصنيفات من آخر نسخة محلية معروضة.
+        if (!navigator.onLine) {
+          window.hideMenuSplash?.();
+          return;
+        }
+        try {
+          const [catSnap, configSnap, prodSnap] = await Promise.all([
+            db.collection("categories").doc("all_categories").get(),
+            db.collection("settings").doc("menu_config").get(),
+            db.collection("products").doc("all_products").get(),
+          ]);
+          const freshSnapshot = {
+            categories: catSnap.exists ? catSnap.data()?.data || [] : [],
+            showUnavailable:
+              configSnap.exists && configSnap.data()?.showUnavailable === true,
+            products: Array.isArray(prodSnap.data()?.data)
+              ? prodSnap.data().data
+              : [],
+            savedAt: Date.now(),
+          };
+          renderMenuSnapshot(freshSnapshot);
+          localStorage.setItem(MENU_CACHE_KEY, JSON.stringify(freshSnapshot));
           startMenuProductsRealtimeListener();
         } catch (e) {
-          console.error("Error:", e);
+          const offline =
+            !navigator.onLine ||
+            e?.code === "unavailable" ||
+            /offline|network|unavailable/i.test(String(e?.message || ""));
+          if (offline) {
+            console.info(
+              "تعذر الوصول إلى Firestore؛ يستمر عرض آخر نسخة محفوظة من المنيو.",
+            );
+          } else {
+            console.error("تعذر تحديث بيانات المنيو:", e);
+          }
+          window.hideMenuSplash?.();
         }
       }
+
+      // إعادة المحاولة تلقائياً بعد عودة الاتصال.
+      window.addEventListener("online", () => loadData());
 
       function displayProducts(items) {
         const grid = document.getElementById("menuGrid");
@@ -2682,6 +2744,15 @@
             (doc) => {
               if (!doc.exists) return;
               products = Array.isArray(doc.data()?.data) ? doc.data().data : [];
+              try {
+                const cached = JSON.parse(
+                  localStorage.getItem(MENU_CACHE_KEY) || "{}",
+                );
+                localStorage.setItem(
+                  MENU_CACHE_KEY,
+                  JSON.stringify({ ...cached, products, savedAt: Date.now() }),
+                );
+              } catch (error) {}
               filterProducts();
               renderPopularProducts(); // تحديث الشريط المتحرك عند تغير البيانات
             },
@@ -2712,6 +2783,26 @@
       let selectedTable = null;
       let menuUsers = [];
       let eligibleAssignees = [];
+      let activeCashierPresence = {};
+      const normalizeMenuRole = (value) =>
+        String(value || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[\s-]+/g, "_");
+      const menuUserDisplayName = (user) =>
+        user?.name ||
+        user?.fullName ||
+        user?.displayName ||
+        user?.cashierName ||
+        user?.username ||
+        "";
+      const normalizeMenuCashierName = (value) =>
+        String(value || "")
+          .normalize("NFKC")
+          .trim()
+          .replace(/\s+/g, " ")
+          .toLocaleLowerCase("ar");
+
       let selectedAssignee = null;
 
       const modalOverlay = document.getElementById("cashierModal");
@@ -2941,14 +3032,112 @@
       }
 
       async function loadMenuUsers() {
-        try {
-          const snap = await db.collection("users").doc("all_users").get();
-          const data = snap.exists ? snap.data() || {} : {};
-          menuUsers = Array.isArray(data.data) ? data.data : [];
-        } catch (error) {
-          console.error("❌ تعذر تحميل مستخدمي المنيو:", error);
+        if (!navigator.onLine) {
           menuUsers = [];
-          showToast("❌ تعذر تحميل قائمة المستخدمين.");
+          activeCashierPresence = {};
+          if (assigneeHint)
+            assigneeHint.textContent =
+              "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.";
+          return;
+        }
+        try {
+          const [usersSnap, presenceSnap, menuConfigSnap] = await Promise.all([
+            db.collection("users").doc("all_users").get(),
+            db.collection("cashier_presence").where("active", "==", true).get(),
+            db.collection("settings").doc("menu_config").get(),
+          ]);
+          const data = usersSnap.exists ? usersSnap.data() || {} : {};
+          menuUsers = Array.isArray(data.data) ? data.data : [];
+          activeCashierPresence = {};
+          // سجل الحضور هو المصدر الأساسي: لا يُدرج إلا من كانت حالته active=true.
+          const normalizePresenceName = (value) =>
+            String(value || "")
+              .normalize("NFKC")
+              .trim()
+              .replace(/\s+/g, " ")
+              .toLocaleLowerCase("ar");
+          presenceSnap.forEach((doc) => {
+            const presence = doc.data() || {};
+            const state = { ...presence, active: presence.active === true };
+            [
+              doc.id,
+              presence.username,
+              presence.cashierUsername,
+              presence.cashierId,
+              presence.uid,
+              normalizePresenceName(
+                presence.cashierName || presence.name || presence.fullName,
+              ),
+            ]
+              .filter(Boolean)
+              .forEach((key) => {
+                activeCashierPresence[String(key)] = state;
+              });
+          });
+
+          // دعم زر «أنا أعمل الآن» في شاشة الكاشير، الذي يكتب حالته في menu_config.
+          // تُطبّق حالته على حسابه المطابق فقط؛ إذا كانت false تمنع إظهار اسمه حتى
+          // لو بقي له سجل حضور قديم مفعّل.
+          const availability = menuConfigSnap.exists
+            ? menuConfigSnap.data()?.cashierAvailability
+            : null;
+          if (
+            availability &&
+            (availability.cashierId ||
+              availability.cashierName ||
+              availability.cashierUsername)
+          ) {
+            const normalizeCashierName = (value) =>
+              String(value || "")
+                .normalize("NFKC")
+                .trim()
+                .replace(/\s+/g, " ")
+                .toLocaleLowerCase("ar");
+            const cashierName = normalizeCashierName(availability.cashierName);
+            const identity = [
+              availability.cashierId,
+              availability.cashierUsername,
+            ]
+              .filter(Boolean)
+              .map(String);
+            // الاسم هو أساس المطابقة؛ المعرّفات تُستخدم كاحتياط إذا لم يتطابق الاسم.
+            const matchingUser =
+              menuUsers.find(
+                (user) =>
+                  cashierName &&
+                  normalizeCashierName(menuUserDisplayName(user)) ===
+                    cashierName,
+              ) ||
+              menuUsers.find((user) => {
+                const userIdentity = [user.id, user.uid, user.username]
+                  .filter(Boolean)
+                  .map(String);
+                return userIdentity.some((value) => identity.includes(value));
+              });
+            if (matchingUser) {
+              const state = { active: availability.cashierWorking === true };
+              [
+                matchingUser.username,
+                matchingUser.id,
+                matchingUser.uid,
+                normalizeCashierName(menuUserDisplayName(matchingUser)),
+              ]
+                .filter(Boolean)
+                .forEach((key) => {
+                  activeCashierPresence[String(key)] = state;
+                });
+            }
+          }
+        } catch (error) {
+          const offline =
+            !navigator.onLine ||
+            error?.code === "unavailable" ||
+            /offline|network|unavailable/i.test(String(error?.message || ""));
+          if (offline) console.info("قائمة المستلمين غير متاحة دون اتصال.");
+          else console.error("❌ تعذر تحميل مستخدمي المنيو:", error);
+          menuUsers = [];
+          activeCashierPresence = {};
+          if (!offline) showToast("❌ تعذر تحميل قائمة المستخدمين.");
         }
       }
 
@@ -2962,15 +3151,42 @@
           return;
         }
         const routingRole = getRoutingRole(selectedOrderType);
+        // الكاشير الذي فعّل «أنا أعمل الآن» يظهر كمستلم في كل أنواع
+        // الطلبات: صالة، استلام، وتوصيل. مستخدم الدليفري فقط يظل متاحاً
+        // للاستلام والتوصيل دون اشتراط حالة الكاشير.
         const allowedRoles =
           routingRole === "cashier"
             ? ["cashier", "cashier_delivery"]
-            : ["delivery", "cashier_delivery"];
-        eligibleAssignees = menuUsers.filter((user) =>
-          allowedRoles.includes(user.role),
-        );
+            : ["delivery", "cashier_delivery", "cashier"];
+        eligibleAssignees = menuUsers.filter((user) => {
+          const role = normalizeMenuRole(
+            user.role || user.userRole || user.type,
+          );
+          if (!allowedRoles.includes(role)) return false;
+          const isCashier = role === "cashier" || role === "cashier_delivery";
+          if (!isCashier)
+            return routingRole !== "cashier" && role === "delivery";
+          const nameKey = normalizeMenuCashierName(menuUserDisplayName(user));
+          const keys = [nameKey, user.username, user.id, user.uid]
+            .filter(Boolean)
+            .map(String);
+          return keys.some(
+            (key) => activeCashierPresence[key]?.active === true,
+          );
+        });
 
         if (eligibleAssignees.length === 0) {
+          if (routingRole === "cashier") {
+            assigneeSelect.innerHTML =
+              '<option value="">لا يوجد كاشير يعمل الآن</option>';
+            assigneeSelect.disabled = true;
+            selectedAssignee = null;
+            if (assigneeHint)
+              assigneeHint.textContent =
+                "لا يمكن إرسال طلب صالة/محلي حتى يفعّل أحد الكاشيرين خيار (أنا أعمل الآن).";
+            validateModal();
+            return;
+          }
           const fallbackName =
             routingRole === "cashier"
               ? "الكاشير الافتراضي"
@@ -2991,7 +3207,10 @@
           const key = String(user.username || user.id || user.uid || index);
           const option = document.createElement("option");
           option.value = key;
-          option.textContent = `${user.name || user.username || "مستخدم"}${user.role === "cashier_delivery" ? " (كاشير ودليفري)" : ""}`;
+          const role = normalizeMenuRole(
+            user.role || user.userRole || user.type,
+          );
+          option.textContent = `${menuUserDisplayName(user) || "مستخدم"}${role === "cashier_delivery" ? " (كاشير ودليفري)" : ""}`;
           assigneeSelect.appendChild(option);
         });
 
@@ -3001,8 +3220,10 @@
             menuUsers.length === 0
               ? "سيتم إرسال الطلب إلى شاشة الكاشير الافتراضية."
               : routingRole === "cashier"
-                ? "اختر كاشيراً لاستلام طلب الصالة/المحلي."
-                : "اختر مستخدم الدليفري لاستلام طلب التوصيل أو الاستلام.";
+                ? eligibleAssignees.length
+                  ? "اختر كاشيراً يعمل الآن لاستلام طلب الصالة/المحلي."
+                  : "لا يوجد كاشير مفعّل للعمل الآن."
+                : "يمكن اختيار كاشير مفعّل للعمل الآن أو مستخدم الدليفري لطلب الاستلام أو التوصيل.";
         }
 
         const first = eligibleAssignees[0];
@@ -3040,6 +3261,7 @@
       });
 
       async function seedCashiersIfMissing() {
+        if (!navigator.onLine) return;
         const types = ["sala", "estlam", "tawseel"];
         const names = {
           sala: "كاشير الصالة",
