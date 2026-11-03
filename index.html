@@ -2956,14 +2956,10 @@
           return;
         }
         if (!selectedAssignee) {
-          const role = getRoutingRole(selectedOrderType);
-          selectedAssignee = {
-            id: `default-${role}`,
-            username: `default_${role}`,
-            name:
-              role === "cashier" ? "الكاشير الافتراضي" : "الدليفري الافتراضي",
-            role,
-          };
+          showToast(
+            "⚠️ لا يوجد مستخدم مفعّل لاستلام الطلب. فعّل (أنا أعمل الآن) أولاً.",
+          );
+          return;
         }
 
         let orderData = {
@@ -3151,21 +3147,14 @@
           return;
         }
         const routingRole = getRoutingRole(selectedOrderType);
-        // الكاشير الذي فعّل «أنا أعمل الآن» يظهر كمستلم في كل أنواع
-        // الطلبات: صالة، استلام، وتوصيل. مستخدم الدليفري فقط يظل متاحاً
-        // للاستلام والتوصيل دون اشتراط حالة الكاشير.
-        const allowedRoles =
-          routingRole === "cashier"
-            ? ["cashier", "cashier_delivery"]
-            : ["delivery", "cashier_delivery", "cashier"];
+        // في الصالة والاستلام والتوصيل: كل مستخدم كاشير/دليفري يظهر
+        // إذا فعّل «أنا أعمل الآن»، ويختفي إذا لم يفعّلها، دون قيد حسب نوع الطلب.
+        const eligibleRoles = ["cashier", "delivery", "cashier_delivery"];
         eligibleAssignees = menuUsers.filter((user) => {
           const role = normalizeMenuRole(
             user.role || user.userRole || user.type,
           );
-          if (!allowedRoles.includes(role)) return false;
-          const isCashier = role === "cashier" || role === "cashier_delivery";
-          if (!isCashier)
-            return routingRole !== "cashier" && role === "delivery";
+          if (!eligibleRoles.includes(role)) return false;
           const nameKey = normalizeMenuCashierName(menuUserDisplayName(user));
           const keys = [nameKey, user.username, user.id, user.uid]
             .filter(Boolean)
@@ -3176,29 +3165,15 @@
         });
 
         if (eligibleAssignees.length === 0) {
-          if (routingRole === "cashier") {
-            assigneeSelect.innerHTML =
-              '<option value="">لا يوجد كاشير يعمل الآن</option>';
-            assigneeSelect.disabled = true;
-            selectedAssignee = null;
-            if (assigneeHint)
-              assigneeHint.textContent =
-                "لا يمكن إرسال طلب صالة/محلي حتى يفعّل أحد الكاشيرين خيار (أنا أعمل الآن).";
-            validateModal();
-            return;
-          }
-          const fallbackName =
-            routingRole === "cashier"
-              ? "الكاشير الافتراضي"
-              : "الدليفري الافتراضي";
-          eligibleAssignees = [
-            {
-              id: `default-${routingRole}`,
-              username: `default_${routingRole}`,
-              name: fallbackName,
-              role: routingRole,
-            },
-          ];
+          assigneeSelect.innerHTML =
+            '<option value="">لا يتوفر مستخدم حالياً</option>';
+          assigneeSelect.disabled = true;
+          selectedAssignee = null;
+          if (assigneeHint)
+            assigneeHint.textContent =
+              "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).";
+          validateModal();
+          return;
         }
 
         assigneeSelect.innerHTML =
@@ -3217,13 +3192,7 @@
         assigneeSelect.disabled = false;
         if (assigneeHint) {
           assigneeHint.textContent =
-            menuUsers.length === 0
-              ? "سيتم إرسال الطلب إلى شاشة الكاشير الافتراضية."
-              : routingRole === "cashier"
-                ? eligibleAssignees.length
-                  ? "اختر كاشيراً يعمل الآن لاستلام طلب الصالة/المحلي."
-                  : "لا يوجد كاشير مفعّل للعمل الآن."
-                : "يمكن اختيار كاشير مفعّل للعمل الآن أو مستخدم الدليفري لطلب الاستلام أو التوصيل.";
+            "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.";
         }
 
         const first = eligibleAssignees[0];
