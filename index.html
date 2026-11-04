@@ -2770,6 +2770,9 @@
             showUnavailableProducts =
               doc.exists && doc.data().showUnavailable === true;
             filterProducts();
+            // تتغير cashierAvailability في هذا المستند عند الضغط على زر
+            // «أنا أعمل الآن»؛ أعد تحميل الحضور لتحديث المستلمين فوراً.
+            scheduleCashierAssigneeRefresh();
           });
       }
 
@@ -3136,6 +3139,32 @@
           if (!offline) showToast("❌ تعذر تحميل قائمة المستخدمين.");
         }
       }
+
+      let cashierAssigneeRefreshTimer = null;
+      let unsubscribeCashierPresence = null;
+      function scheduleCashierAssigneeRefresh() {
+        clearTimeout(cashierAssigneeRefreshTimer);
+        cashierAssigneeRefreshTimer = setTimeout(async () => {
+          await loadMenuUsers();
+          if (modalOverlay?.classList.contains("active") && selectedOrderType) {
+            populateAssigneeSelect();
+          }
+        }, 120);
+      }
+      function startCashierPresenceRealtimeListener() {
+        if (unsubscribeCashierPresence) return;
+        unsubscribeCashierPresence = db
+          .collection("cashier_presence")
+          .where("active", "==", true)
+          .onSnapshot(
+            () => scheduleCashierAssigneeRefresh(),
+            (error) => {
+              console.error("تعذر تحديث حضور الكاشير لحظياً", error);
+              unsubscribeCashierPresence = null;
+            },
+          );
+      }
+      startCashierPresenceRealtimeListener();
 
       function populateAssigneeSelect() {
         if (!assigneeSelect) return;
