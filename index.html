@@ -2053,6 +2053,256 @@
           transition-duration: 0.01ms !important;
         }
       }
+
+      /* أماكن العروض والتنبيهات — امتداد متناسق مع هوية المنيو الحالية */
+      .menu-announcement {
+        display: none;
+        max-width: 1120px;
+        margin: 14px auto 10px;
+        padding: 12px 16px;
+        border: 1px solid var(--app-border);
+        border-right: 4px solid var(--app-primary);
+        border-radius: 12px;
+        background: var(--app-card);
+        color: var(--app-text);
+        box-shadow: var(--app-shadow);
+        font-weight: 700;
+        line-height: 1.6;
+        opacity: 0;
+        transform: translateY(-7px);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+      .menu-announcement.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .menu-promotions {
+        max-width: 1120px;
+        margin: 12px auto 18px;
+        padding: 0 20px;
+        display: none;
+      }
+      .menu-promotions.is-visible {
+        display: block;
+        animation: menuPromoIn 0.45s ease both;
+      }
+      .menu-promo-frame {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        background: #171411;
+        color: #fff;
+        box-shadow: 0 12px 30px rgba(36, 22, 12, 0.18);
+      }
+      .menu-promo-track {
+        display: flex;
+        direction: rtl;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        overscroll-behavior-x: contain;
+      }
+      .menu-promo-track::-webkit-scrollbar {
+        display: none;
+      }
+      .menu-promo-slide {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: center;
+        flex: 0 0 100%;
+        min-height: 245px;
+        padding: 26px 30px;
+        scroll-snap-align: start;
+        overflow: hidden;
+      }
+      .menu-promo-slide:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(
+          90deg,
+          rgba(15, 13, 11, 0.98) 0%,
+          rgba(15, 13, 11, 0.86) 38%,
+          rgba(15, 13, 11, 0.12) 100%
+        );
+      }
+      .menu-promo-slide img {
+        position: absolute;
+        z-index: -2;
+        inset: 0 22% 0 0;
+        width: 78%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+      .menu-promo-content {
+        width: min(48%, 430px);
+        text-align: right;
+        transition:
+          opacity 0.35s ease,
+          transform 0.35s ease;
+      }
+      .menu-promo-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--app-primary);
+        color: white;
+        padding: 4px 11px;
+        border-radius: 20px;
+        font-size: 0.76rem;
+        font-weight: 800;
+      }
+      .menu-promo-content h2 {
+        font-size: clamp(1.35rem, 3vw, 2rem);
+        line-height: 1.25;
+        margin: 10px 0 7px;
+        color: #fff;
+      }
+      .menu-promo-content p {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0 0 12px;
+      }
+      .menu-promo-price {
+        font-size: 1rem;
+        font-weight: 900;
+        color: #ffc567;
+        margin-inline-end: 8px;
+      }
+      .menu-promo-add {
+        border: 0;
+        border-radius: 24px;
+        background: var(--app-primary);
+        color: white;
+        padding: 10px 17px;
+        font:
+          700 0.86rem Cairo,
+          sans-serif;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          filter 0.2s ease;
+      }
+      .menu-promo-add:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.08);
+      }
+      .menu-promo-dots {
+        position: absolute;
+        z-index: 3;
+        bottom: 11px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 7px;
+      }
+      .menu-promo-dot {
+        width: 7px;
+        height: 7px;
+        border: 0;
+        padding: 0;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.55);
+        cursor: pointer;
+        transition:
+          width 0.2s ease,
+          background 0.2s ease;
+      }
+      .menu-promo-dot.active {
+        width: 19px;
+        background: #fff;
+      }
+      @keyframes menuPromoIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (max-width: 768px) {
+        .menu-announcement {
+          margin: 10px 14px 8px;
+          padding: 10px 12px;
+          font-size: 0.86rem;
+        }
+        .menu-promotions {
+          padding: 0 14px;
+          margin: 10px auto 14px;
+        }
+        .menu-promo-slide {
+          min-height: 220px;
+          padding: 20px 17px;
+        }
+        .menu-promo-slide img {
+          inset: 0 14% 0 0;
+          width: 86%;
+        }
+        .menu-promo-slide:before {
+          background: linear-gradient(
+            90deg,
+            rgba(15, 13, 11, 0.97) 0%,
+            rgba(15, 13, 11, 0.84) 45%,
+            rgba(15, 13, 11, 0.15) 100%
+          );
+        }
+        .menu-promo-content {
+          width: 58%;
+        }
+        .menu-promo-content h2 {
+          font-size: 1.25rem;
+        }
+        .menu-promo-content p {
+          font-size: 0.8rem;
+        }
+        .menu-promo-add {
+          font-size: 0.78rem;
+          padding: 9px 13px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .menu-announcement,
+        .menu-promo-content,
+        .menu-promo-dot,
+        .menu-promo-add {
+          transition: none !important;
+        }
+        .menu-promotions.is-visible {
+          animation: none !important;
+        }
+        .menu-promo-track {
+          scroll-behavior: auto !important;
+        }
+      }
+
+      .menu-promo-countdown {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0 0 12px;
+        padding: 5px 9px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.19);
+        color: #fff;
+        font-size: 0.78rem;
+        font-weight: 800;
+        direction: rtl;
+      }
+      .menu-promo-countdown i {
+        color: #ffc567;
+      }
+      .menu-promo-countdown.is-ending {
+        background: rgba(183, 42, 26, 0.32);
+        border-color: rgba(255, 190, 170, 0.35);
+      }
     </style>
   </head>
   <body class="no-scroll">
@@ -2215,6 +2465,25 @@
         <input type="text" id="searchBox" placeholder="ماذا تشتهي اليوم؟" />
       </div>
     </div>
+
+    <!-- تنبيه يرسله الكاشير ويظل ظاهراً حتى الإنهاء أو انتهاء الفترة -->
+    <div
+      class="menu-announcement"
+      id="menuAnnouncement"
+      role="status"
+      aria-live="polite"
+    ></div>
+    <!-- شريط عروض المنتجات التي اختارها الكاشير (حتى 5 عروض) -->
+    <section
+      class="menu-promotions"
+      id="menuPromotions"
+      aria-label="عروض المطعم"
+    >
+      <div class="menu-promo-frame">
+        <div class="menu-promo-track" id="menuPromoTrack"></div>
+        <div class="menu-promo-dots" id="menuPromoDots"></div>
+      </div>
+    </section>
 
     <!-- Categories -->
     <div class="categories" id="catList"></div>
@@ -2500,6 +2769,7 @@
         products = Array.isArray(snapshot.products) ? snapshot.products : [];
         displayProducts(products);
         renderPopularProducts();
+        renderMenuPromotions(snapshot.promotions || {});
         window.hideMenuSplash?.();
         return products.length > 0;
       }
@@ -2521,10 +2791,11 @@
           return;
         }
         try {
-          const [catSnap, configSnap, prodSnap] = await Promise.all([
+          const [catSnap, configSnap, prodSnap, promoSnap] = await Promise.all([
             db.collection("categories").doc("all_categories").get(),
             db.collection("settings").doc("menu_config").get(),
             db.collection("products").doc("all_products").get(),
+            db.collection("settings").doc("menu_promotions").get(),
           ]);
           const freshSnapshot = {
             categories: catSnap.exists ? catSnap.data()?.data || [] : [],
@@ -2533,6 +2804,7 @@
             products: Array.isArray(prodSnap.data()?.data)
               ? prodSnap.data().data
               : [],
+            promotions: promoSnap.exists ? promoSnap.data() : {},
             savedAt: Date.now(),
           };
           renderMenuSnapshot(freshSnapshot);
@@ -2762,6 +3034,236 @@
             },
           );
       }
+
+      // العروض والتنبيهات المنشورة من الكاشير محفوظة في settings/menu_promotions
+      let menuPromoInterval = null;
+      let menuPromoCountdownInterval = null;
+      let menuPromoScrollFrame = null;
+      let currentMenuPromoData = {};
+      function promoSafeText(value) {
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[ch],
+        );
+      }
+      function formatMenuPromoCountdown(expiresAt) {
+        const remaining = Number(expiresAt) - Date.now();
+        if (!Number.isFinite(remaining) || remaining <= 0) return "انتهى العرض";
+        const totalSeconds = Math.floor(remaining / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        if (days > 0) return `متبقي ${days} يوم ${hours} ساعة`;
+        if (hours > 0) return `متبقي ${hours} ساعة ${minutes} دقيقة`;
+        if (minutes > 0) return `متبقي ${minutes} دقيقة ${seconds} ثانية`;
+        return `متبقي ${seconds} ثانية`;
+      }
+      function updateMenuPromoCountdowns() {
+        let hasExpired = false;
+        document.querySelectorAll("[data-promo-expires]").forEach((el) => {
+          const end = Number(el.dataset.promoExpires);
+          if (end <= Date.now()) {
+            hasExpired = true;
+            return;
+          }
+          el.innerHTML = `<i class="far fa-clock"></i> ${formatMenuPromoCountdown(end)}`;
+          el.classList.toggle("is-ending", end - Date.now() <= 60 * 60 * 1000);
+        });
+        if (hasExpired) renderMenuPromotions(currentMenuPromoData);
+      }
+      function renderMenuPromotions(data = {}) {
+        currentMenuPromoData = data || {};
+        window.clearInterval(menuPromoCountdownInterval);
+        const noticeBox = document.getElementById("menuAnnouncement");
+        const notice = data.notice || {};
+        const expiry = Number(notice.expiresAt || 0);
+        const noticeActive =
+          notice.active !== false &&
+          String(notice.text || "").trim() &&
+          (!expiry || expiry > Date.now());
+        if (noticeBox) {
+          window.clearTimeout(window.menuAnnouncementHideTimer);
+          if (noticeActive) {
+            noticeBox.textContent = notice.text;
+            noticeBox.style.display = "block";
+            requestAnimationFrame(() => noticeBox.classList.add("is-visible"));
+          } else {
+            noticeBox.classList.remove("is-visible");
+            window.menuAnnouncementHideTimer = window.setTimeout(() => {
+              if (!noticeBox.classList.contains("is-visible"))
+                noticeBox.style.display = "none";
+            }, 320);
+          }
+        }
+        const section = document.getElementById("menuPromotions");
+        const track = document.getElementById("menuPromoTrack");
+        const dots = document.getElementById("menuPromoDots");
+        if (!section || !track || !dots) return;
+        const offers = (Array.isArray(data.offers) ? data.offers : [])
+          .filter(
+            (o) =>
+              o &&
+              o.active !== false &&
+              (!o.expiresAt || Number(o.expiresAt) > Date.now()),
+          )
+          .slice(0, 5)
+          .map((o) => {
+            const product = products.find(
+              (p) => String(p.id) === String(o.productId),
+            );
+            return product
+              ? { ...o, ...product, title: o.title || product.name }
+              : o;
+          })
+          .filter((o) => o.productId || o.id);
+        window.clearInterval(menuPromoInterval);
+        if (!offers.length) {
+          section.classList.remove("is-visible");
+          section.style.display = "none";
+          track.innerHTML = "";
+          dots.innerHTML = "";
+          return;
+        }
+        section.style.display = "block";
+        requestAnimationFrame(() => section.classList.add("is-visible"));
+        track.innerHTML = offers
+          .map((o, i) => {
+            const productId = o.productId || o.id;
+            const title = promoSafeText(o.title || o.name || "عرض مميز");
+            const image = promoSafeText(o.image || "");
+            const price = promoSafeText(o.price ?? "");
+            const description = promoSafeText(
+              o.description || "اطلبه الآن واستمتع بالطعم",
+            );
+            const expiresAt = Number(o.expiresAt || 0);
+            const countdown = expiresAt
+              ? `<div class="menu-promo-countdown" data-promo-expires="${expiresAt}"><i class="far fa-clock"></i> ${formatMenuPromoCountdown(expiresAt)}</div>`
+              : `<div class="menu-promo-countdown"><i class="far fa-clock"></i> عرض لفترة محدودة</div>`;
+            return `<article class="menu-promo-slide" data-promo-index="${i}"><img src="${image}" alt="${title}" onerror="this.style.display='none'"><div class="menu-promo-content"><span class="menu-promo-label"><i class="fas fa-fire"></i> عرض مميز</span><h2>${title}</h2>${countdown}<p>${description}</p><button class="menu-promo-add" onclick="addToCart('${String(productId).replace(/['\\]/g, "")}')">اطلب الآن <span class="menu-promo-price">${price} SDG</span><i class="fas fa-arrow-left"></i></button></div></article>`;
+          })
+          .join("");
+        dots.innerHTML = offers
+          .map(
+            (_, i) =>
+              `<button class="menu-promo-dot ${i === 0 ? "active" : ""}" type="button" aria-label="العرض ${i + 1}" onclick="goToMenuPromo(${i})"></button>`,
+          )
+          .join("");
+        updateMenuPromoCountdowns();
+        menuPromoCountdownInterval = window.setInterval(
+          updateMenuPromoCountdowns,
+          1000,
+        );
+        let current = 0;
+        const setActive = (index) => {
+          current = index;
+          track
+            .querySelectorAll(".menu-promo-slide")
+            .forEach((slide, i) =>
+              slide.classList.toggle("active", i === index),
+            );
+          dots
+            .querySelectorAll(".menu-promo-dot")
+            .forEach((dot, i) => dot.classList.toggle("active", i === index));
+        };
+        window.goToMenuPromo = (index) => {
+          const slide = track.querySelector(`[data-promo-index="${index}"]`);
+          if (slide) {
+            setActive(index);
+            slide.scrollIntoView({
+              behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+                ? "auto"
+                : "smooth",
+              block: "nearest",
+              inline: "start",
+            });
+          }
+        };
+        track.onscroll = () => {
+          if (menuPromoScrollFrame) cancelAnimationFrame(menuPromoScrollFrame);
+          menuPromoScrollFrame = requestAnimationFrame(() => {
+            const slides = [...track.querySelectorAll(".menu-promo-slide")];
+            if (!slides.length) return;
+            const center =
+              track.getBoundingClientRect().left + track.clientWidth / 2;
+            let nearest = 0,
+              distance = Infinity;
+            slides.forEach((slide, i) => {
+              const d = Math.abs(
+                slide.getBoundingClientRect().left +
+                  slide.clientWidth / 2 -
+                  center,
+              );
+              if (d < distance) {
+                distance = d;
+                nearest = i;
+              }
+            });
+            setActive(nearest);
+          });
+        };
+        if (
+          offers.length > 1 &&
+          !matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          menuPromoInterval = window.setInterval(() => {
+            current = (current + 1) % offers.length;
+            window.goToMenuPromo(current);
+          }, 5000);
+        }
+      }
+      async function refreshMenuPromotionsFromFirestore() {
+        if (!navigator.onLine) return;
+        try {
+          const snap = await db
+            .collection("settings")
+            .doc("menu_promotions")
+            .get();
+          const latest = snap.exists
+            ? snap.data() || {}
+            : { offers: [], notice: { active: false } };
+          renderMenuPromotions(latest);
+          const cached = JSON.parse(
+            localStorage.getItem(MENU_CACHE_KEY) || "{}",
+          );
+          cached.promotions = latest;
+          cached.savedAt = Date.now();
+          localStorage.setItem(MENU_CACHE_KEY, JSON.stringify(cached));
+        } catch (error) {
+          console.warn("تعذر مزامنة العروض عند العودة إلى المنيو", error);
+        }
+      }
+      window.addEventListener("pageshow", refreshMenuPromotionsFromFirestore);
+      window.addEventListener("focus", refreshMenuPromotionsFromFirestore);
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) refreshMenuPromotionsFromFirestore();
+      });
+      db.collection("settings")
+        .doc("menu_promotions")
+        .onSnapshot(
+          (doc) => {
+            const promotions = doc.exists ? doc.data() || {} : {};
+            renderMenuPromotions(promotions);
+            try {
+              const cached = JSON.parse(
+                localStorage.getItem(MENU_CACHE_KEY) || "{}",
+              );
+              cached.promotions = promotions;
+              cached.savedAt = Date.now();
+              localStorage.setItem(MENU_CACHE_KEY, JSON.stringify(cached));
+            } catch (error) {
+              console.warn("تعذر حفظ العروض في cache المنيو", error);
+            }
+          },
+          (error) => console.warn("تعذر تحديث العروض والتنبيهات مباشرة", error),
+        );
 
       async function loadMenuDisplaySettingRealtime() {
         db.collection("settings")
