@@ -2947,7 +2947,14 @@
             : ["nameEn", "name_en", "englishName", "nameEN"];
         if (window.menuLanguage?.() === "en") {
           for (const key of englishKeys) if (item?.[key]) return item[key];
-          const source = item?.[kind] || item?.name || item?.description || "";
+          const source =
+            kind === "description"
+              ? item?.description || ""
+              : item?.name || item?.title || "";
+          if (!source)
+            return kind === "description"
+              ? window.menuWords?.en?.tasty || "Delicious item"
+              : "";
           return window.translateMenuAuto?.(source) || source;
         }
         return item?.[kind] || item?.name || item?.description || "";
@@ -3097,7 +3104,7 @@
         track.innerHTML = displayList
           .map(
             (p) => `
-    <div class="popular-card" onclick="addToCart('${p.id}')">
+    <div class="popular-card" data-product-id="${p.id}" onclick="addToCart('${p.id}')">
       <img src="${p.image}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Crect fill=%22%23FFF1E0%22 width=%22300%22 height=%22300%22/%3E%3Ctext x=%22150%22 y=%22150%22 font-size=%2220%22 fill=%22%23FF6B35%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🍽️%3C/text%3E%3C/svg%3E'" alt="${p.name}" />
       <div class="popular-card-info">
         <h4>${menuLocalized(p)}</h4>
@@ -3181,7 +3188,7 @@
           content.innerHTML = cart
             .map(
               (c) => `
-          <div class="cart-item">
+          <div class="cart-item" data-product-id="${c.id}">
             <div class="item-info">
               <div class="item-name">${menuLocalized(c)}</div>
               <div class="item-price">${c.price * c.qty} SDG</div>
@@ -4227,10 +4234,110 @@
         }
         function scheduleLanguageRefresh() {
           clearTimeout(languageRefreshTimer);
-          languageRefreshTimer = setTimeout(() => {
-            if (typeof window.applyMenuLanguage === "function")
-              window.applyMenuLanguage();
-          }, 350);
+          languageRefreshTimer = setTimeout(refreshLocalizedTextOnly, 180);
+        }
+        function refreshLocalizedTextOnly() {
+          if (lang !== "en") return;
+          if (typeof products !== "undefined")
+            document
+              .querySelectorAll(".product[data-product-id]")
+              .forEach((card) => {
+                const item = products.find(
+                  (p) => String(p.id) === String(card.dataset.productId),
+                );
+                if (!item) return;
+                const name = card.querySelector(".product-name"),
+                  desc = card.querySelector(".product-desc");
+                if (name) name.textContent = menuLocalized(item);
+                if (desc)
+                  desc.textContent =
+                    menuLocalized(item, "description") || tr("tasty");
+              });
+          if (typeof menuCategories !== "undefined") {
+            const buttons = document.querySelectorAll("#catList .cat-btn");
+            if (buttons[0]) buttons[0].textContent = tr("all");
+            menuCategories.forEach((c, i) => {
+              if (buttons[i + 1]) buttons[i + 1].textContent = menuLocalized(c);
+            });
+          }
+          if (typeof products !== "undefined")
+            document
+              .querySelectorAll(".popular-card[data-product-id]")
+              .forEach((card) => {
+                const item = products.find(
+                  (p) => String(p.id) === String(card.dataset.productId),
+                );
+                const name = card.querySelector("h4");
+                if (item && name) name.textContent = menuLocalized(item);
+              });
+          if (typeof cart !== "undefined")
+            document
+              .querySelectorAll(".cart-item[data-product-id]")
+              .forEach((row) => {
+                const item = cart.find(
+                  (c) => String(c.id) === String(row.dataset.productId),
+                );
+                const name = row.querySelector(".item-name");
+                if (item && name) name.textContent = menuLocalized(item);
+              });
+          const data =
+            typeof currentMenuPromoData !== "undefined"
+              ? currentMenuPromoData
+              : {};
+          const notice = data.notice || {};
+          const noticeEl = document.getElementById("menuAnnouncement");
+          if (noticeEl && notice.text && notice.active !== false)
+            noticeEl.textContent =
+              notice.textEn ||
+              notice.text_en ||
+              window.translateMenuAuto(notice.text);
+          const offers = (Array.isArray(data.offers) ? data.offers : [])
+            .filter(
+              (o) =>
+                o &&
+                o.active !== false &&
+                (!o.expiresAt || Number(o.expiresAt) > Date.now()),
+            )
+            .slice(0, 5)
+            .map((o) => {
+              const product = products.find(
+                (p) => String(p.id) === String(o.productId),
+              );
+              return product
+                ? { ...o, ...product, title: o.title || product.name }
+                : o;
+            })
+            .filter((o) => o.productId || o.id);
+          document
+            .querySelectorAll(".menu-promo-slide[data-promo-index]")
+            .forEach((slide) => {
+              const i = Number(slide.dataset.promoIndex),
+                o = offers[i];
+              if (!o) return;
+              const source = o.title || o.name || "";
+              const title = slide.querySelector("h2"),
+                desc = slide.querySelector(".menu-promo-content p");
+              if (title)
+                title.textContent =
+                  o.titleEn ||
+                  o.title_en ||
+                  o.nameEn ||
+                  o.name_en ||
+                  window.translateMenuAuto(source) ||
+                  source;
+              if (desc) {
+                const text =
+                  o.descriptionEn ||
+                  o.description_en ||
+                  o.englishDescription ||
+                  o.description ||
+                  "";
+                desc.textContent =
+                  window.translateMenuAuto(text) ||
+                  text ||
+                  tr("promoDescription");
+              }
+            });
         }
         function translationChunks(text) {
           const enc = new TextEncoder();
