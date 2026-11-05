@@ -2303,6 +2303,191 @@
         background: rgba(183, 42, 26, 0.32);
         border-color: rgba(255, 190, 170, 0.35);
       }
+
+      /* عرض الشعار بحجم أصغر وبتقديم أنيق على مختلف الشاشات */
+      header .logo-box {
+        width: clamp(145px, 20vw, 238px);
+        height: clamp(145px, 20vw, 238px);
+        border-radius: 50%;
+        background: linear-gradient(145deg, #fff 0%, #fffaf5 100%);
+        border: 1px solid rgba(229, 155, 93, 0.28);
+        box-shadow:
+          0 14px 38px rgba(82, 48, 24, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+        transition:
+          transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+          box-shadow 0.35s ease;
+        animation: logoReveal 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      header .logo-box:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 19px 42px rgba(82, 48, 24, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      header .logo-frame {
+        inset: 8px;
+        width: auto;
+        height: auto;
+        border: 1px solid rgba(255, 182, 39, 0.55);
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px rgba(255, 182, 39, 0.07);
+        pointer-events: none;
+      }
+      header .logo-frame::before {
+        display: none;
+      }
+      header .logo-img {
+        width: 74%;
+        height: 74%;
+        object-fit: contain;
+        animation: none;
+        filter: drop-shadow(0 4px 8px rgba(45, 35, 25, 0.1));
+        transition:
+          transform 0.35s ease,
+          filter 0.35s ease;
+      }
+      header .logo-box:hover .logo-img {
+        transform: scale(1.035);
+        filter: drop-shadow(0 7px 12px rgba(45, 35, 25, 0.14));
+      }
+      @keyframes logoReveal {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      @media (max-width: 768px) {
+        header .logo-box {
+          width: clamp(132px, 43vw, 178px);
+          height: clamp(132px, 43vw, 178px);
+        }
+        header .logo-frame {
+          inset: 6px;
+        }
+        header .logo-img {
+          width: 73%;
+          height: 73%;
+        }
+      }
+      @media (max-width: 380px) {
+        header .logo-box {
+          width: 128px;
+          height: 128px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        header .logo-box,
+        header .logo-img {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      /* تصغير إضافي لدائرة الشعار وعنوان المطعم */
+      header .logo-box {
+        width: clamp(118px, 16vw, 190px);
+        height: clamp(118px, 16vw, 190px);
+      }
+      header .title {
+        font-size: clamp(1.85rem, 4.5vw, 3.55rem);
+        letter-spacing: -1px;
+        margin: 7px 0;
+      }
+      @media (max-width: 768px) {
+        header .logo-box {
+          width: clamp(108px, 35vw, 145px);
+          height: clamp(108px, 35vw, 145px);
+        }
+        header .title {
+          font-size: clamp(1.65rem, 8.5vw, 2.65rem);
+          letter-spacing: -0.5px;
+          margin: 5px 0;
+        }
+      }
+      @media (max-width: 380px) {
+        header .logo-box {
+          width: 104px;
+          height: 104px;
+        }
+        header .title {
+          font-size: 1.55rem;
+        }
+      }
+
+      /* إزالة الشارات النصية الزخرفية من رأس المنيو */
+      header::before,
+      header::after {
+        content: none !important;
+        display: none !important;
+      }
+
+      /* تقليل المسافة بين رأس المنيو والبحث */
+      header {
+        min-height: 300px;
+        padding-top: clamp(18px, 3vw, 38px);
+        padding-bottom: clamp(18px, 3vw, 38px);
+      }
+      .search-box {
+        margin-top: 10px;
+      }
+      @media (max-width: 768px) {
+        header {
+          min-height: 0;
+          height: auto;
+          padding: 18px 16px 12px;
+          gap: 6px;
+        }
+        .search-box {
+          margin: 8px auto 6px;
+          padding: 0 14px;
+        }
+      }
+      @media (max-width: 380px) {
+        header {
+          min-height: 0;
+          padding: 14px 12px 10px;
+        }
+      }
+
+      html[dir="ltr"] body {
+        text-align: left;
+      }
+      html[dir="ltr"] .menu-intro,
+      html[dir="ltr"] .cart-header,
+      html[dir="ltr"] .cart-item,
+      html[dir="ltr"] .modal-card {
+        text-align: left;
+      }
+      html[dir="ltr"] .menu-promo-slide {
+        direction: ltr;
+      }
+      html[dir="ltr"] .menu-promo-content {
+        text-align: left;
+      }
+      html[dir="ltr"] .cart-btn {
+        right: auto;
+        left: 22px;
+      }
+      html[dir="ltr"] .cart-sidebar {
+        right: auto;
+        left: -520px;
+      }
+      html[dir="ltr"] .cart-sidebar.open {
+        left: 0;
+      }
+      html[dir="ltr"] .search-input input {
+        text-align: left;
+        padding: 18px 22px 18px 55px;
+      }
+      html[dir="ltr"] .search-input > i {
+        left: 20px;
+        right: auto;
+      }
     </style>
   </head>
   <body class="no-scroll">
@@ -2742,6 +2927,7 @@
       });
 
       let products = [];
+      let menuCategories = [];
       let cart = [];
       let activeCategory = "all";
       let showUnavailableProducts = false;
@@ -2749,16 +2935,34 @@
       const ORDER_ROUTING_SETTINGS_ID = "order_routing";
       const MENU_CACHE_KEY = "kafta_electronic_menu_snapshot_v2";
 
+      function menuLocalized(item, kind = "name") {
+        const englishKeys =
+          kind === "description"
+            ? [
+                "descriptionEn",
+                "description_en",
+                "englishDescription",
+                "descriptionEN",
+              ]
+            : ["nameEn", "name_en", "englishName", "nameEN"];
+        if (window.menuLanguage?.() === "en") {
+          for (const key of englishKeys) if (item?.[key]) return item[key];
+          const source = item?.[kind] || item?.name || item?.description || "";
+          return window.translateMenuAuto?.(source) || source;
+        }
+        return item?.[kind] || item?.name || item?.description || "";
+      }
       function renderMenuCategories(categories) {
+        menuCategories = Array.isArray(categories) ? categories : [];
         const catList = document.getElementById("catList");
         if (!catList) return;
         const safeCategories = Array.isArray(categories) ? categories : [];
         catList.innerHTML =
-          `<button class="cat-btn active" onclick="setCategory('all', this)">الكل</button>` +
+          `<button class="cat-btn active" onclick="setCategory('all', this)">${window.menuText?.("الكل", "All") || "الكل"}</button>` +
           safeCategories
             .map(
               (c) =>
-                `<button class="cat-btn" onclick="setCategory('${c.id}', this)">${c.name}</button>`,
+                `<button class="cat-btn" onclick="setCategory('${c.id}', this)">${menuLocalized(c)}</button>`,
             )
             .join("");
       }
@@ -2835,18 +3039,18 @@
           (p) => showUnavailableProducts || p.available !== false,
         );
         if (items.length === 0) {
-          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--app-muted);"><i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px;"></i><p>لم نجد منتجات</p></div>`;
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--app-muted);"><i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px;"></i><p>${window.menuText?.("لم نجد منتجات", "No products found") || "لم نجد منتجات"}</p></div>`;
           return;
         }
         grid.innerHTML = items
           .map(
             (p) => `
-      <div class="product fade-in">
-        <span class="product-badge"><i class="fas fa-fire"></i> طازج على الفحم</span>
+      <div class="product fade-in" data-product-id="${p.id}">
+        <span class="product-badge"><i class="fas fa-fire"></i> ${window.menuText?.("طازج على الفحم", "Fresh off the grill") || "طازج على الفحم"}</span>
         <img src="${p.image}" class="product-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Crect fill=%22%23FFF1E0%22 width=%22300%22 height=%22300%22/%3E%3Ctext x=%22150%22 y=%22150%22 font-size=%2220%22 fill=%22%23FF6B35%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🍽️%3C/text%3E%3C/svg%3E'" />
         <div class="product-info">
-          <h3 class="product-name">${p.name}</h3>
-          <p class="product-desc">${p.description || "منتج لذيذ"}</p>
+          <h3 class="product-name">${menuLocalized(p)}</h3>
+          <p class="product-desc">${menuLocalized(p, "description") || window.menuText?.("منتج لذيذ", "Delicious item")}</p>
           <div class="product-bottom">
             <div class="price">
               <div class="price-amount">${p.price}</div>
@@ -2854,7 +3058,7 @@
             </div>
             ${
               p.available === false
-                ? `<div style="color:#EF4444;font-weight:800;font-size:0.8rem"><i class="fas fa-ban"></i> غير متوفر</div>`
+                ? `<div style="color:#EF4444;font-weight:800;font-size:0.8rem"><i class="fas fa-ban"></i> ${window.menuText?.("غير متوفر", "Unavailable") || "غير متوفر"}</div>`
                 : `<button class="add-btn" onclick="addToCart('${p.id}')"><i class="fas fa-plus"></i></button>`
             }
           </div>
@@ -2896,7 +3100,7 @@
     <div class="popular-card" onclick="addToCart('${p.id}')">
       <img src="${p.image}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Crect fill=%22%23FFF1E0%22 width=%22300%22 height=%22300%22/%3E%3Ctext x=%22150%22 y=%22150%22 font-size=%2220%22 fill=%22%23FF6B35%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E🍽️%3C/text%3E%3C/svg%3E'" alt="${p.name}" />
       <div class="popular-card-info">
-        <h4>${p.name}</h4>
+        <h4>${menuLocalized(p)}</h4>
         <div class="price">
           <span>${p.price}</span>
           <span class="price-unit">SDG</span>
@@ -2928,7 +3132,15 @@
         const filtered = products.filter((p) => {
           const matchCat =
             activeCategory === "all" || p.category === activeCategory;
-          const matchSearch = p.name.toLowerCase().includes(query);
+          const matchSearch = [
+            menuLocalized(p),
+            menuLocalized(p, "description"),
+            p.name,
+            p.nameEn,
+            p.name_en,
+          ]
+            .filter(Boolean)
+            .some((value) => String(value).toLowerCase().includes(query));
           return matchCat && matchSearch;
         });
         displayProducts(filtered);
@@ -2962,7 +3174,7 @@
         document.getElementById("cartCount").innerText = total;
         const content = document.getElementById("cartContent");
         if (cart.length === 0) {
-          content.innerHTML = `<div class="empty-msg"><i class="fas fa-shopping-basket"></i><p>السلة فارغة</p></div>`;
+          content.innerHTML = `<div class="empty-msg"><i class="fas fa-shopping-basket"></i><p>${window.menuText?.("السلة فارغة", "Your cart is empty") || "السلة فارغة"}</p></div>`;
           document.getElementById("checkoutBtn").disabled = true;
           document.getElementById("cashierBtn").disabled = true;
         } else {
@@ -2971,7 +3183,7 @@
               (c) => `
           <div class="cart-item">
             <div class="item-info">
-              <div class="item-name">${c.name}</div>
+              <div class="item-name">${menuLocalized(c)}</div>
               <div class="item-price">${c.price * c.qty} SDG</div>
             </div>
             <div class="qty-box">
@@ -2997,10 +3209,19 @@
 
       function checkout() {
         if (cart.length === 0) return;
-        let msg = "🍖 *طلب جديد من كفتة على الفحم* 🔥\n";
-        cart.forEach((c) => (msg += `✓ ${c.name} × ${c.qty}\n`));
+        let msg =
+          window.menuText?.(
+            "🍖 *طلب جديد من كفتة على الفحم* 🔥\n",
+            "🍖 *New order from Kofta on Charcoal* 🔥\n",
+          ) || "🍖 *طلب جديد من كفتة على الفحم* 🔥\n";
+        cart.forEach((c) => (msg += `✓ ${menuLocalized(c)} × ${c.qty}\n`));
         const total = cart.reduce((a, b) => a + b.price * b.qty, 0);
-        msg += `\n💰 *الإجمالي: ${total} SDG*\n📍 *الموقع:* دنقلا - شرق مستشفى الشرطة`;
+        msg +=
+          window.menuText?.(
+            `\n💰 *الإجمالي: ${total} SDG*\n📍 *الموقع:* دنقلا - شرق مستشفى الشرطة`,
+            `\n💰 *Total: ${total} SDG*\n📍 *Location:* Dongola — East of the Police Hospital`,
+          ) ||
+          `\n💰 *الإجمالي: ${total} SDG*\n📍 *الموقع:* دنقلا - شرق مستشفى الشرطة`;
         window.open(
           `https://wa.me/+249125088500?text=${encodeURIComponent(msg)}`,
           "_blank",
@@ -3055,16 +3276,24 @@
       }
       function formatMenuPromoCountdown(expiresAt) {
         const remaining = Number(expiresAt) - Date.now();
-        if (!Number.isFinite(remaining) || remaining <= 0) return "انتهى العرض";
+        if (!Number.isFinite(remaining) || remaining <= 0)
+          return (
+            window.menuText?.("انتهى العرض", "Offer ended") || "انتهى العرض"
+          );
         const totalSeconds = Math.floor(remaining / 1000);
         const days = Math.floor(totalSeconds / 86400);
         const hours = Math.floor((totalSeconds % 86400) / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
-        if (days > 0) return `متبقي ${days} يوم ${hours} ساعة`;
-        if (hours > 0) return `متبقي ${hours} ساعة ${minutes} دقيقة`;
-        if (minutes > 0) return `متبقي ${minutes} دقيقة ${seconds} ثانية`;
-        return `متبقي ${seconds} ثانية`;
+        const rem = window.menuText?.("متبقي", "Remaining") || "متبقي",
+          d = window.menuText?.("يوم", "d") || "يوم",
+          h = window.menuText?.("ساعة", "h") || "ساعة",
+          m = window.menuText?.("دقيقة", "m") || "m",
+          sec = window.menuText?.("ثانية", "s") || "s";
+        if (days > 0) return `${rem} ${days} ${d} ${hours} ${h}`;
+        if (hours > 0) return `${rem} ${hours} ${h} ${minutes} ${m}`;
+        if (minutes > 0) return `${rem} ${minutes} ${m} ${seconds} ${sec}`;
+        return `${rem} ${seconds} ${sec}`;
       }
       function updateMenuPromoCountdowns() {
         let hasExpired = false;
@@ -3092,7 +3321,13 @@
         if (noticeBox) {
           window.clearTimeout(window.menuAnnouncementHideTimer);
           if (noticeActive) {
-            noticeBox.textContent = notice.text;
+            noticeBox.textContent =
+              window.menuLanguage?.() === "en"
+                ? notice.textEn ||
+                  notice.text_en ||
+                  window.translateMenuAuto?.(notice.text) ||
+                  notice.text
+                : notice.text;
             noticeBox.style.display = "block";
             requestAnimationFrame(() => noticeBox.classList.add("is-visible"));
           } else {
@@ -3137,7 +3372,17 @@
         track.innerHTML = offers
           .map((o, i) => {
             const productId = o.productId || o.id;
-            const title = promoSafeText(o.title || o.name || "عرض مميز");
+            const titleSource = o.title || o.name || "";
+            const title = promoSafeText(
+              window.menuLanguage?.() === "en"
+                ? o.titleEn ||
+                    o.title_en ||
+                    o.nameEn ||
+                    o.name_en ||
+                    window.translateMenuAuto?.(titleSource) ||
+                    titleSource
+                : titleSource || window.menuText?.("عرض مميز", "Special offer"),
+            );
             const image = promoSafeText(o.image || "");
             const price = promoSafeText(o.price ?? "");
             const description = promoSafeText(
@@ -3146,8 +3391,8 @@
             const expiresAt = Number(o.expiresAt || 0);
             const countdown = expiresAt
               ? `<div class="menu-promo-countdown" data-promo-expires="${expiresAt}"><i class="far fa-clock"></i> ${formatMenuPromoCountdown(expiresAt)}</div>`
-              : `<div class="menu-promo-countdown"><i class="far fa-clock"></i> عرض لفترة محدودة</div>`;
-            return `<article class="menu-promo-slide" data-promo-index="${i}"><img src="${image}" alt="${title}" onerror="this.style.display='none'"><div class="menu-promo-content"><span class="menu-promo-label"><i class="fas fa-fire"></i> عرض مميز</span><h2>${title}</h2>${countdown}<p>${description}</p><button class="menu-promo-add" onclick="addToCart('${String(productId).replace(/['\\]/g, "")}')">اطلب الآن <span class="menu-promo-price">${price} SDG</span><i class="fas fa-arrow-left"></i></button></div></article>`;
+              : `<div class="menu-promo-countdown"><i class="far fa-clock"></i> ${window.menuText?.("عرض لفترة محدودة", "Limited-time offer") || "عرض لفترة محدودة"}</div>`;
+            return `<article class="menu-promo-slide" data-promo-index="${i}"><img src="${image}" alt="${title}" onerror="this.style.display='none'"><div class="menu-promo-content"><span class="menu-promo-label"><i class="fas fa-fire"></i> ${window.menuText?.("عرض مميز", "Special offer") || "عرض مميز"}</span><h2>${title}</h2>${countdown}<p>${description}</p><button class="menu-promo-add" onclick="addToCart('${String(productId).replace(/['\\]/g, "")}')">${window.menuText?.("اطلب الآن", "Order now") || "اطلب الآن"} <span class="menu-promo-price">${price} SDG</span><i class="fas fa-arrow-left"></i></button></div></article>`;
           })
           .join("");
         dots.innerHTML = offers
@@ -3175,16 +3420,18 @@
         };
         window.goToMenuPromo = (index) => {
           const slide = track.querySelector(`[data-promo-index="${index}"]`);
-          if (slide) {
-            setActive(index);
-            slide.scrollIntoView({
-              behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-                ? "auto"
-                : "smooth",
-              block: "nearest",
-              inline: "start",
-            });
-          }
+          if (!slide) return;
+          setActive(index);
+          // مرّر شريط العروض أفقيًا فقط؛ لا تستخدم scrollIntoView لأنه قد يقفز بالصفحة عموديًا.
+          const deltaX =
+            slide.getBoundingClientRect().left -
+            track.getBoundingClientRect().left;
+          track.scrollTo({
+            left: track.scrollLeft + deltaX,
+            behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "auto"
+              : "smooth",
+          });
         };
         track.onscroll = () => {
           if (menuPromoScrollFrame) cancelAnimationFrame(menuPromoScrollFrame);
@@ -3345,8 +3592,7 @@
         eligibleAssignees = [];
         modalSubmitBtn.disabled = true;
         assigneeSelect.disabled = true;
-        assigneeSelect.innerHTML =
-          '<option value="">جاري تحميل المستخدمين...</option>';
+        assigneeSelect.innerHTML = `<option value="">${window.menuText?.("جاري تحميل المستخدمين...", "Loading available users...") || "جاري تحميل المستخدمين..."}</option>`;
 
         salaFields.classList.remove("visible");
         estlamFields.classList.remove("visible");
@@ -3538,7 +3784,10 @@
           activeCashierPresence = {};
           if (assigneeHint)
             assigneeHint.textContent =
-              "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.";
+              window.menuText?.(
+                "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.",
+                "An internet connection is required to load recipients and send the order.",
+              ) || "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.";
           return;
         }
         try {
@@ -3672,8 +3921,7 @@
         if (!assigneeSelect) return;
         if (!selectedOrderType) {
           assigneeSelect.disabled = true;
-          assigneeSelect.innerHTML =
-            '<option value="">اختر نوع الطلب أولاً</option>';
+          assigneeSelect.innerHTML = `<option value="">${window.menuText?.("اختر نوع الطلب أولاً", "Choose an order type first") || "اختر نوع الطلب أولاً"}</option>`;
           selectedAssignee = null;
           return;
         }
@@ -3696,19 +3944,21 @@
         });
 
         if (eligibleAssignees.length === 0) {
-          assigneeSelect.innerHTML =
-            '<option value="">لا يتوفر مستخدم حالياً</option>';
+          assigneeSelect.innerHTML = `<option value="">${window.menuText?.("لا يتوفر مستخدم حالياً", "No user is available right now") || "لا يتوفر مستخدم حالياً"}</option>`;
           assigneeSelect.disabled = true;
           selectedAssignee = null;
           if (assigneeHint)
             assigneeHint.textContent =
+              window.menuText?.(
+                "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).",
+                "A recipient appears when a cashier or delivery user selects “I’m working now”.",
+              ) ||
               "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).";
           validateModal();
           return;
         }
 
-        assigneeSelect.innerHTML =
-          '<option value="">اختر المستخدم المستلم</option>';
+        assigneeSelect.innerHTML = `<option value="">${window.menuText?.("اختر المستخدم المستلم", "Choose who receives the order") || "اختر المستخدم المستلم"}</option>`;
         eligibleAssignees.forEach((user, index) => {
           const key = String(user.username || user.id || user.uid || index);
           const option = document.createElement("option");
@@ -3716,13 +3966,17 @@
           const role = normalizeMenuRole(
             user.role || user.userRole || user.type,
           );
-          option.textContent = `${menuUserDisplayName(user) || "مستخدم"}${role === "cashier_delivery" ? " (كاشير ودليفري)" : ""}`;
+          option.textContent = `${menuUserDisplayName(user) || window.menuText?.("مستخدم", "User") || "مستخدم"}${role === "cashier_delivery" ? window.menuText?.(" (كاشير ودليفري)", " (Cashier & delivery)") || " (كاشير ودليفري)" : ""}`;
           assigneeSelect.appendChild(option);
         });
 
         assigneeSelect.disabled = false;
         if (assigneeHint) {
           assigneeHint.textContent =
+            window.menuText?.(
+              "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.",
+              "Only active cashier and delivery accounts appear for all order types.",
+            ) ||
             "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.";
         }
 
@@ -3746,6 +4000,28 @@
 
       let toastTimer = null;
       function showToast(msg) {
+        const en = {
+          "⚠️ هذا المنتج غير متوفر حالياً.":
+            "⚠️ This product is currently unavailable.",
+          "⚠️ السلة فارغة، أضف منتجات أولاً.":
+            "⚠️ Your cart is empty. Add products first.",
+          "⚠️ السلة فارغة!": "⚠️ Your cart is empty!",
+          "⚠️ اختر نوع الطلب أولاً.": "⚠️ Choose an order type first.",
+          "⚠️ لا يوجد مستخدم مفعّل لاستلام الطلب. فعّل (أنا أعمل الآن) أولاً.":
+            "⚠️ No active recipient. Ask a cashier to select “I’m working now”.",
+          "✅ تم إرسال الطلب إلى الكاشير بنجاح!":
+            "✅ Your order was sent to the cashier!",
+          "❌ تعذر إرسال الطلب. تحقق من الاتصال وقواعد Firestore.":
+            "❌ Could not send the order. Check your connection and Firestore rules.",
+          "❌ تعذر تحميل قائمة المستخدمين.": "❌ Could not load users.",
+          "✅ تمت إضافة المنتج إلى السلة": "✅ Added to cart",
+          "✅ تم تثبيت التطبيق بنجاح!": "✅ App installed successfully!",
+          '📱 Safari: اضغط على زر المشاركة ثم "إضافة إلى الشاشة الرئيسية"':
+            "📱 In Safari, tap Share, then “Add to Home Screen”.",
+          '📱 اضغط على قائمة المتصفح ⋮ ثم "تثبيت التطبيق"':
+            "📱 Open the browser menu ⋮ and choose “Install app”.",
+        };
+        if (window.menuLanguage?.() === "en") msg = en[msg] || msg;
         toastMsg.textContent = msg;
         toast.classList.add("show");
         clearTimeout(toastTimer);
@@ -3790,43 +4066,494 @@
         };
 
         const toggle = document.getElementById("langToggle");
-        let lang = (navigator.language || "ar").toLowerCase().startsWith("ar")
-          ? "ar"
-          : "en";
-        const translations = {
+        const savedLang = localStorage.getItem("kofta_menu_language");
+        let lang = ["ar", "en"].includes(savedLang)
+          ? savedLang
+          : (navigator.languages || [navigator.language || "ar"]).some((x) =>
+                String(x).toLowerCase().startsWith("ar"),
+              )
+            ? "ar"
+            : "en";
+        const words = {
           ar: {
-            placeholder: "ماذا تشتهي اليوم؟",
-            title: "اختار وجبتك المفضلة",
+            search: "ماذا تشتهي اليوم؟",
             popular: "الأكثر طلباً",
+            all: "الكل",
+            noProducts: "لم نجد منتجات",
+            fresh: "طازج على الفحم",
+            tasty: "منتج لذيذ",
+            unavailable: "غير متوفر",
+            empty: "السلة فارغة",
+            cart: "سلة طلباتك",
+            total: "الإجمالي:",
+            whatsapp: "إرسال الطلب عبر واتساب",
+            sendCashier: "إرسال الطلب إلى الكاشير",
+            sendOrder: "إرسال الطلب",
+            hall: "صالة",
+            pickup: "استلام",
+            delivery: "توصيل",
+            assignee: "إرسال الطلب إلى",
+            chooseType: "اختر نوع الطلب أولاً",
+            hint: "سيتم عرض المستخدمين المسموح لهم بهذا النوع فقط.",
+            table: "رقم الطاولة",
+            phone: "رقم الهاتف",
+            customer: "اسم العميل",
+            optional: "الاسم (اختياري)",
+            address: "العنوان / الموقع",
+            notes: "ملاحظات",
+            addNotes: "أضف ملاحظات (اختياري)",
+            confirm: "تأكيد الطلب",
+            meal: "اختار وجبتك المفضلة",
+            note: "نكهة أصيلة، مكونات طازجة، وتجربة طلب سهلة من طاولتك.",
+            installTitle: "ثبّت التطبيق على هاتفك",
+            installSub: "وصول أسرع وتجربة أفضل",
+            install: "تثبيت",
+            splash: "تجربة طلب هادئة، سريعة، ولذيذة من أول لمسة",
+            loading: "نجهّز لك تجربة طعام مختلفة...",
+            home: "الرئيسية",
+            categories: "الأقسام",
+            searchNav: "البحث",
+            cartNav: "السلة",
+            promo: "عرض مميز",
+            orderNow: "اطلب الآن",
+            promoDescription: "اطلبه الآن واستمتع بالطعم",
+            limited: "عرض لفترة محدودة",
+            ended: "انتهى العرض",
+            remaining: "متبقي",
+            day: "يوم",
+            hour: "ساعة",
+            minute: "دقيقة",
+            second: "ثانية",
+            success: "✅ تم إرسال الطلب إلى الكاشير بنجاح!",
+            failed: "❌ تعذر إرسال الطلب. تحقق من الاتصال وقواعد Firestore.",
+            added: "✅ تمت إضافة المنتج إلى السلة",
+            userLoading: "جاري تحميل المستخدمين...",
+            noUser: "لا يتوفر مستخدم حالياً",
+            chooseUser: "اختر المستخدم المستلم",
+            usersHint:
+              "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.",
+            offline: "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.",
+            noActive:
+              "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).",
+            title: "كفتة على الفحم",
           },
           en: {
-            placeholder: "What are you craving today?",
-            title: "Choose your favourite meal",
+            search: "What are you craving today?",
             popular: "Most Requested",
+            all: "All",
+            noProducts: "No products found",
+            fresh: "Fresh off the grill",
+            tasty: "Delicious item",
+            unavailable: "Unavailable",
+            empty: "Your cart is empty",
+            cart: "Your Cart",
+            total: "Total:",
+            whatsapp: "Send order via WhatsApp",
+            sendCashier: "Send order to cashier",
+            sendOrder: "Place order",
+            hall: "Dine in",
+            pickup: "Pickup",
+            delivery: "Delivery",
+            assignee: "Send order to",
+            chooseType: "Choose an order type first",
+            hint: "Only users authorized for this order type will appear.",
+            table: "Table number",
+            phone: "Phone number",
+            customer: "Customer name",
+            optional: "Name (optional)",
+            address: "Address / location",
+            notes: "Notes",
+            addNotes: "Add a note (optional)",
+            confirm: "Confirm order",
+            meal: "Choose your favourite meal",
+            note: "Authentic flavour, fresh ingredients, and an easy ordering experience.",
+            installTitle: "Install the app on your phone",
+            installSub: "Faster access and a better experience",
+            install: "Install",
+            splash:
+              "A smooth, quick, and delicious ordering experience from the first touch",
+            loading: "Preparing a different dining experience for you...",
+            home: "Home",
+            categories: "Categories",
+            searchNav: "Search",
+            cartNav: "Cart",
+            promo: "Special offer",
+            orderNow: "Order now",
+            promoDescription: "Order now and enjoy the flavour",
+            limited: "Limited-time offer",
+            ended: "Offer ended",
+            remaining: "Remaining",
+            day: "d",
+            hour: "h",
+            minute: "m",
+            second: "s",
+            success: "✅ Your order was sent to the cashier!",
+            failed:
+              "❌ Could not send the order. Check your connection and Firestore rules.",
+            added: "✅ Added to cart",
+            userLoading: "Loading available users...",
+            noUser: "No user is available right now",
+            chooseUser: "Choose who receives the order",
+            usersHint:
+              "Only active cashier and delivery accounts appear for all order types.",
+            offline:
+              "An internet connection is required to load recipients and send the order.",
+            noActive:
+              "A recipient appears when a cashier or delivery user selects “I’m working now”.",
+            title: "Kofta on Charcoal",
           },
         };
-
+        const tr = (k) => words[lang][k] || words.ar[k] || k;
+        // ترجمة النصوص العربية غير المزودة بحقول إنجليزية عبر MyMemory، مع cache وحدّ يومي محلي.
+        const AUTO_CACHE_KEY = "kofta_menu_auto_translation_v1";
+        const AUTO_USAGE_KEY = "kofta_menu_auto_translation_usage_v1";
+        let autoTranslationCache = {};
+        try {
+          autoTranslationCache = JSON.parse(
+            localStorage.getItem(AUTO_CACHE_KEY) || "{}",
+          );
+        } catch {}
+        const autoTranslationPending = new Map();
+        const autoTranslationQueue = [];
+        let autoTranslationBusy = false;
+        let languageRefreshTimer = null;
+        function saveTranslationCache() {
+          try {
+            localStorage.setItem(
+              AUTO_CACHE_KEY,
+              JSON.stringify(autoTranslationCache),
+            );
+          } catch {}
+        }
+        function scheduleLanguageRefresh() {
+          clearTimeout(languageRefreshTimer);
+          languageRefreshTimer = setTimeout(() => {
+            if (typeof window.applyMenuLanguage === "function")
+              window.applyMenuLanguage();
+          }, 350);
+        }
+        function translationChunks(text) {
+          const enc = new TextEncoder();
+          if (enc.encode(text).length <= 480) return [text];
+          const words = text.split(/\s+/);
+          const out = [];
+          let part = "";
+          for (const word of words) {
+            if (enc.encode(word).length > 480) {
+              if (part) {
+                out.push(part);
+                part = "";
+              }
+              let chunk = "";
+              for (const ch of word) {
+                if (enc.encode(chunk + ch).length > 470) {
+                  out.push(chunk);
+                  chunk = ch;
+                } else chunk += ch;
+              }
+              if (chunk) out.push(chunk);
+              continue;
+            }
+            const next = part ? part + " " + word : word;
+            if (enc.encode(next).length > 480) {
+              if (part) out.push(part);
+              part = word;
+            } else part = next;
+          }
+          if (part) out.push(part);
+          return out;
+        }
+        async function translateChunk(text) {
+          const url =
+            "https://api.mymemory.translated.net/get?" +
+            new URLSearchParams({ q: text, langpair: "ar|en" });
+          let lastError;
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 12000);
+            try {
+              const response = await fetch(url, { signal: controller.signal });
+              if (response.status === 429 || response.status >= 500) {
+                lastError = Error(
+                  "Translation service HTTP " + response.status,
+                );
+                if (attempt < 2) {
+                  await new Promise((r) => setTimeout(r, 700 * (attempt + 1)));
+                  continue;
+                }
+                throw lastError;
+              }
+              if (!response.ok)
+                throw Error("Translation service HTTP " + response.status);
+              const data = await response.json();
+              const translated = data?.responseData?.translatedText;
+              const status = Number(data?.responseStatus);
+              if (status === 429 || status >= 500) {
+                lastError = Error(
+                  data?.responseDetails || "Translation rate limit",
+                );
+                if (attempt < 2) {
+                  await new Promise((r) => setTimeout(r, 700 * (attempt + 1)));
+                  continue;
+                }
+              }
+              if (
+                status !== 200 ||
+                !translated ||
+                /^NO QUERY/i.test(translated)
+              )
+                throw Error(data?.responseDetails || "No translation");
+              return translated.trim();
+            } catch (error) {
+              lastError = error;
+              if (
+                attempt < 2 &&
+                /429|5\d\d|network|fetch|abort/i.test(
+                  String(error?.message || error),
+                )
+              ) {
+                await new Promise((r) => setTimeout(r, 700 * (attempt + 1)));
+                continue;
+              }
+              throw error;
+            } finally {
+              clearTimeout(timeout);
+            }
+          }
+          throw lastError || Error("Translation failed");
+        }
+        let autoUsageDay = "";
+        let autoUsageChars = 0;
+        function reserveTranslationChars(count) {
+          const today = new Date().toISOString().slice(0, 10);
+          if (autoUsageDay !== today) {
+            autoUsageDay = today;
+            autoUsageChars = 0;
+            try {
+              const stored = JSON.parse(
+                localStorage.getItem(AUTO_USAGE_KEY) || "{}",
+              );
+              if (stored.day === today)
+                autoUsageChars = Number(stored.chars) || 0;
+            } catch {}
+          }
+          if (autoUsageChars + count > 4800) return false;
+          autoUsageChars += count;
+          try {
+            localStorage.setItem(
+              AUTO_USAGE_KEY,
+              JSON.stringify({ day: today, chars: autoUsageChars }),
+            );
+          } catch {}
+          return true;
+        }
+        async function runTranslationJob(job) {
+          try {
+            if (!reserveTranslationChars(job.text.length))
+              throw Error("daily translation budget reached");
+            const chunks = translationChunks(job.text);
+            const translated = [];
+            for (const chunk of chunks)
+              translated.push(await translateChunk(chunk));
+            autoTranslationCache[job.text] = translated.join(" ");
+            saveTranslationCache();
+            job.resolve(autoTranslationCache[job.text]);
+            scheduleLanguageRefresh();
+          } catch (error) {
+            console.warn(
+              "تعذرت الترجمة التلقائية، سيبقى النص الأصلي:",
+              error.message,
+            );
+            job.resolve("");
+          } finally {
+            autoTranslationPending.delete(job.text);
+          }
+        }
+        async function processTranslationQueue() {
+          if (autoTranslationBusy) return;
+          autoTranslationBusy = true;
+          while (autoTranslationQueue.length) {
+            const batch = autoTranslationQueue.splice(0, 5);
+            await Promise.all(batch.map(runTranslationJob));
+          }
+          autoTranslationBusy = false;
+        }
+        window.translateMenuAuto = function (text) {
+          const source = String(text || "").trim();
+          if (!source || !/\p{Script=Arabic}/u.test(source)) return source;
+          if (autoTranslationCache[source]) return autoTranslationCache[source];
+          try {
+            const usage = JSON.parse(
+              localStorage.getItem(AUTO_USAGE_KEY) || "{}",
+            );
+            if (
+              usage.day === new Date().toISOString().slice(0, 10) &&
+              usage.chars >= 4800
+            )
+              return source;
+          } catch {}
+          if (!autoTranslationPending.has(source)) {
+            let resolve;
+            const promise = new Promise((r) => (resolve = r));
+            autoTranslationPending.set(source, promise);
+            autoTranslationQueue.push({ text: source, resolve });
+            processTranslationQueue();
+          }
+          return source;
+        };
+        window.menuLanguage = () => lang;
+        window.menuText = (ar, en) => (lang === "ar" ? ar : en);
+        window.menuWords = words;
+        function setText(sel, key) {
+          document
+            .querySelectorAll(sel)
+            .forEach((el) => setDirectLabel(el, tr(key)));
+        }
+        function setDirectLabel(el, value) {
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+          let n;
+          while ((n = walker.nextNode()))
+            if (n.nodeValue.trim()) {
+              n.nodeValue = value + " ";
+              return;
+            }
+          if (!el.children.length) el.textContent = value;
+        }
         function applyLang() {
           document.documentElement.lang = lang;
           document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-          if (toggle) toggle.textContent = lang === "ar" ? "EN" : "عربي";
-          const search = document.getElementById("searchBox");
-          if (search) search.placeholder = translations[lang].placeholder;
-
-          const popularTitle = document.getElementById("popularTitleText");
-          if (popularTitle)
-            popularTitle.textContent = translations[lang].popular;
-
+          document.title =
+            lang === "ar"
+              ? "كفتة على الفحم | منيو"
+              : "Kofta on Charcoal | Menu";
+          const meta = document.querySelector('meta[name="description"]');
+          if (meta)
+            meta.content =
+              lang === "ar"
+                ? "كفتة على الفحم - تجربة طلب هادئة وسريعة ولذيذة"
+                : "Kofta on Charcoal — a smooth, quick, and delicious ordering experience";
           document
-            .querySelectorAll("[data-ar]")
-            .forEach((el) => (el.textContent = el.dataset[lang]));
+            .querySelectorAll(".app-brand img,.logo-img,.splash-logo")
+            .forEach(
+              (img) =>
+                (img.alt =
+                  lang === "ar"
+                    ? "شعار كفتة على الفحم"
+                    : "Kofta on Charcoal logo"),
+            );
+          if (toggle) {
+            toggle.textContent = lang === "ar" ? "EN" : "عربي";
+            toggle.setAttribute(
+              "aria-label",
+              lang === "ar" ? "Switch to English" : "التبديل إلى العربية",
+            );
+          }
+          const search = document.getElementById("searchBox");
+          if (search) search.placeholder = tr("search");
+          const fields = {
+            "#popularTitleText": "popular",
+            ".menu-intro-kicker": "fresh",
+            ".menu-intro h2": "meal",
+            ".menu-intro-note": "note",
+            "header .title": "title",
+            ".cart-header h2": "cart",
+            ".cart-items .empty-msg p": "empty",
+            ".total-label": "total",
+            "#checkoutBtn": "whatsapp",
+            "#cashierBtn": "sendCashier",
+            "#cashierModal .modal-header h2": "sendOrder",
+            ".order-type-btn[data-type='sala']": "hall",
+            ".order-type-btn[data-type='estlam']": "pickup",
+            ".order-type-btn[data-type='tawseel']": "delivery",
+            "#assigneeField label": "assignee",
+            "#assigneeHint": "hint",
+            "#salaFields label": "table",
+            "#estlamFields label:first-child": "phone",
+            "#tawseelFields label:first-child": "phone",
+            "#estlamFields label:nth-of-type(2)": "customer",
+            "#tawseelFields label[for='tawseelAddress']": "address",
+            "#notesField label": "notes",
+            "#modalSubmitBtn": "confirm",
+            ".install-title": "installTitle",
+            ".install-sub": "installSub",
+            "#installBtn": "install",
+            ".splash-message": "splash",
+            ".splash-loading-text": "loading",
+          };
+          Object.entries(fields).forEach(([sel, key]) => setText(sel, key));
+          document
+            .querySelectorAll(".location-bar span")
+            .forEach(
+              (el) =>
+                (el.textContent =
+                  lang === "ar"
+                    ? "دنقلا - شرق مستشفى الشرطة"
+                    : "Dongola — East of the Police Hospital"),
+            );
+          document
+            .querySelectorAll(".app-brand span")
+            .forEach((el) => (el.textContent = tr("title")));
+          document
+            .querySelectorAll(".nav-icon")
+            .forEach((el, i) =>
+              el.setAttribute(
+                "aria-label",
+                lang === "ar"
+                  ? i === 0
+                    ? "بحث"
+                    : "السلة"
+                  : i === 0
+                    ? "Search"
+                    : "Cart",
+              ),
+            );
+          const nav = document.querySelector("nav.app-nav");
+          if (nav)
+            nav.setAttribute(
+              "aria-label",
+              lang === "ar" ? "التنقل الرئيسي" : "Main navigation",
+            );
+          const bnav = document.querySelector(".bottom-nav");
+          if (bnav)
+            bnav.setAttribute(
+              "aria-label",
+              lang === "ar" ? "تنقل الهاتف" : "Mobile navigation",
+            );
+          document.querySelectorAll("[data-ar]").forEach((el) => {
+            if (el.dataset[lang]) el.textContent = el.dataset[lang];
+          });
+          document
+            .querySelectorAll("#estlamPhone,#tawseelPhone")
+            .forEach(
+              (el) =>
+                (el.placeholder =
+                  lang === "ar" ? "مثال: 0912345678" : "e.g. 0912345678"),
+            );
+          const nm = document.getElementById("estlamName");
+          if (nm) nm.placeholder = tr("optional");
+          const ad = document.getElementById("tawseelAddress");
+          if (ad)
+            ad.placeholder =
+              lang === "ar" ? "العنوان أو الموقع" : "Address or location";
+          const no = document.getElementById("orderNotes");
+          if (no) no.placeholder = tr("addNotes");
+          if (typeof menuCategories !== "undefined")
+            renderMenuCategories(menuCategories);
+          if (typeof products !== "undefined" && products.length) {
+            filterProducts();
+            renderPopularProducts();
+            if (typeof cart !== "undefined") updateCart();
+          }
+          if (typeof currentMenuPromoData !== "undefined")
+            renderMenuPromotions(currentMenuPromoData);
         }
-
         if (toggle)
           toggle.addEventListener("click", () => {
             lang = lang === "ar" ? "en" : "ar";
+            localStorage.setItem("kofta_menu_language", lang);
             applyLang();
           });
+        window.applyMenuLanguage = applyLang;
         applyLang();
 
         window.playSuccessSound = function () {
@@ -3862,6 +4589,7 @@
           const desc = card.querySelector(".product-desc")?.textContent || "";
           const img = card.querySelector(".product-img")?.src || "";
           const price = card.querySelector(".price-amount")?.textContent || "";
+          const productId = card.dataset.productId;
 
           let sheet = document.getElementById("productSheet");
           if (!sheet) {
@@ -3878,7 +4606,7 @@
           <p id="sheetDesc" style="color:var(--app-muted);margin:8px 0 14px;line-height:1.7"></p>
           <strong id="sheetPrice" style="color:var(--app-primary);font-size:1.5rem;font-weight:900"></strong>
           <button id="sheetAdd" class="checkout-btn" style="margin-top:20px;background:linear-gradient(135deg,var(--app-primary),var(--app-primary-dark))">
-            <i class="fas fa-plus"></i> أضف إلى السلة
+            <i class="fas fa-plus"></i> ${window.menuText?.("أضف إلى السلة", "Add to cart") || "أضف إلى السلة"}
           </button>
         </div>
       `;
@@ -3889,7 +4617,7 @@
           document.getElementById("sheetDesc").textContent = desc;
           document.getElementById("sheetPrice").textContent = price + " SDG";
           document.getElementById("sheetAdd").onclick = () => {
-            const p = products.find((x) => x.name === name);
+            const p = products.find((x) => String(x.id) === String(productId));
             if (p) {
               addToCart(p.id);
               showToast("✅ تمت إضافة المنتج إلى السلة");
