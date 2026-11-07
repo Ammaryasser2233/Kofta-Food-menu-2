@@ -3933,9 +3933,12 @@
           return;
         }
         const routingRole = getRoutingRole(selectedOrderType);
-        // في الصالة والاستلام والتوصيل: كل مستخدم كاشير/دليفري يظهر
-        // إذا فعّل «أنا أعمل الآن»، ويختفي إذا لم يفعّلها، دون قيد حسب نوع الطلب.
-        const eligibleRoles = ["cashier", "delivery", "cashier_delivery"];
+        // لا يظهر إلا المستخدم المخوّل لنوع الطلب المحدد والمفعّل حالياً.
+        // المستخدم ذو الصلاحيتين يظهر في جميع الأقسام.
+        const eligibleRoles =
+          routingRole === "cashier"
+            ? ["cashier", "cashier_delivery"]
+            : ["delivery", "cashier_delivery"];
         eligibleAssignees = menuUsers.filter((user) => {
           const role = normalizeMenuRole(
             user.role || user.userRole || user.type,
@@ -3957,10 +3960,10 @@
           if (assigneeHint)
             assigneeHint.textContent =
               window.menuText?.(
-                "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).",
-                "A recipient appears when a cashier or delivery user selects “I’m working now”.",
+                "لا يوجد مستخدم مفعّل ومخوّل لهذا النوع من الطلبات. فعّل خيار (أنا أعمل الآن) وتأكد من الصلاحية.",
+                "No active user is authorized for this order type. Select “I’m working now” and verify the role.",
               ) ||
-              "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).";
+              "لا يوجد مستخدم مفعّل ومخوّل لهذا النوع من الطلبات. فعّل خيار (أنا أعمل الآن) وتأكد من الصلاحية.";
           validateModal();
           return;
         }
@@ -3981,10 +3984,9 @@
         if (assigneeHint) {
           assigneeHint.textContent =
             window.menuText?.(
-              "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.",
-              "Only active cashier and delivery accounts appear for all order types.",
-            ) ||
-            "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.";
+              "تظهر الحسابات المفعّلة المخوّلة لنوع الطلب المحدد فقط.",
+              "Only active accounts authorized for this order type are shown.",
+            ) || "تظهر الحسابات المفعّلة المخوّلة لنوع الطلب المحدد فقط.";
         }
 
         const first = eligibleAssignees[0];
@@ -4137,8 +4139,7 @@
             userLoading: "جاري تحميل المستخدمين...",
             noUser: "لا يتوفر مستخدم حالياً",
             chooseUser: "اختر المستخدم المستلم",
-            usersHint:
-              "تظهر حسابات الكاشير والدليفري المفعّلة فقط، لجميع أنواع الطلبات.",
+            usersHint: "تظهر الحسابات المفعّلة المخوّلة لنوع الطلب المحدد فقط.",
             offline: "الاتصال مطلوب لتحميل المستلمين وإرسال الطلب.",
             noActive:
               "لن يظهر أي مستلم حتى يفعّل الكاشير أو الدليفري خيار (أنا أعمل الآن).",
@@ -4202,7 +4203,7 @@
             noUser: "No user is available right now",
             chooseUser: "Choose who receives the order",
             usersHint:
-              "Only active cashier and delivery accounts appear for all order types.",
+              "Only active accounts authorized for this order type are shown.",
             offline:
               "An internet connection is required to load recipients and send the order.",
             noActive:
